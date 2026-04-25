@@ -7,6 +7,7 @@ import '../widgets/common.dart';
 import '../widgets/product_mock_art.dart';
 import 'checkout_screen.dart';
 import 'orders_screen.dart';
+import 'prescriptions_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -115,6 +116,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         pageBuilder: (_, animation, __) => FadeTransition(
                           opacity: animation,
                           child: const OrdersScreen(),
+                        ),
+                      ),
+                    );
+                  } else if (i == 2) {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(milliseconds: 300),
+                        pageBuilder: (_, animation, __) => FadeTransition(
+                          opacity: animation,
+                          child: const PrescriptionsScreen(),
                         ),
                       ),
                     );
