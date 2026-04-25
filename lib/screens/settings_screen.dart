@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'saved_addresses_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -40,7 +41,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _MenuItem(
                       icon: Icons.location_on_outlined,
                       label: 'Saved Addresses',
-                      onTap: () {},
+                      onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const SavedAddressesScreen())),
                     ),
                     _MenuItem(
                       icon: Icons.credit_card_outlined,
