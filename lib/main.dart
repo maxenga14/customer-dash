@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'router.dart';
 import 'theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Lock to portrait
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  // Status bar style — transparent over the green header
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
@@ -30,37 +29,30 @@ class CustomerDashApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'MediRun',
       theme: AppTheme.theme,
-
-      // ── Entry point ────────────────────────────────────────────────
       initialRoute: AppRoutes.splash,
-
-      // ── Centralised route generator ────────────────────────────────
       onGenerateRoute: generateRoute,
-
-      // ── Global navigator key (useful for push from non-widget code) ─
-      navigatorKey: AppNavigator.key,
+      navigatorKey: AppNav.key,
     );
   }
 }
 
-// ── Global navigator access ───────────────────────────────────────────────
-/// Use AppNavigator.push() / AppNavigator.pushNamed() from anywhere in the
-/// app without needing a BuildContext.
-class AppNavigator {
-  AppNavigator._();
+/// Global navigator — push named routes from anywhere without a BuildContext.
+/// Renamed to [AppNav] to avoid collision with Flutter internals.
+class AppNav {
+  AppNav._();
+
   static final key = GlobalKey<NavigatorState>();
 
-  static NavigatorState get _nav => key.currentState!;
+  static NavigatorState get _n => key.currentState!;
 
-  static Future<T?> push<T>(Widget screen) => _nav.push(
-      generateRoute(RouteSettings(name: screen.runtimeType.toString()))
-          as Route<T>);
+  static Future<T?> to<T>(String route, {Object? args}) =>
+      _n.pushNamed<T>(route, arguments: args);
 
-  static Future<T?> pushNamed<T>(String routeName, {Object? arguments}) =>
-      _nav.pushNamed<T>(routeName, arguments: arguments);
+  static Future<T?> replace<T>(String route, {Object? args}) =>
+      _n.pushReplacementNamed<T, dynamic>(route, arguments: args);
 
-  static void pop<T>([T? result]) => _nav.pop<T>(result);
+  static void back<T>([T? result]) => _n.pop<T>(result);
 
-  static void popToRoot() =>
-      _nav.pushNamedAndRemoveUntil(AppRoutes.dashboard, (_) => false);
+  static void home() =>
+      _n.pushNamedAndRemoveUntil(AppRoutes.dashboard, (_) => false);
 }

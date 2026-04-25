@@ -36,24 +36,24 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     // ── Splash / entry ─────────────────────────────────────────────
     case AppRoutes.splash:
-      return _fade(const _SplashScreen());
+      return _fadeRoute(const _SplashScreen());
 
     // ── Dashboard ──────────────────────────────────────────────────
     case AppRoutes.dashboard:
-      return _fade(const DashboardScreen());
+      return _fadeRoute(const DashboardScreen());
 
     // ── Orders ─────────────────────────────────────────────────────
     case AppRoutes.orders:
-      return _fade(const OrdersScreen());
+      return _fadeRoute(const OrdersScreen());
 
     case AppRoutes.orderDetails:
       final orderId = settings.arguments as String? ?? '';
-      return _slide(OrderDetailsScreen(
+      return _slideRoute(OrderDetailsScreen(
           order: mockOrders.firstWhere((o) => o.orderNumber == orderId)));
 
     case AppRoutes.orderConfirm:
       final args = settings.arguments as Map<String, dynamic>? ?? {};
-      return _slide(OrderConfirmationScreen(
+      return _slideRoute(OrderConfirmationScreen(
         orderNumber: args['orderNumber'] as String? ?? 'UNK-000',
         itemsTotal: args['itemsTotal'] as double? ?? 0.0,
         deliveryFee: args['deliveryFee'] as double? ?? 0.0,
@@ -64,37 +64,37 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     // ── Checkout ───────────────────────────────────────────────────
     case AppRoutes.checkout:
-      return _slide(const CheckoutScreen(initialItems: []));
+      return _slideRoute(const CheckoutScreen(initialItems: []));
 
     // ── Prescriptions ──────────────────────────────────────────────
     case AppRoutes.prescriptions:
-      return _fade(const PrescriptionsScreen());
+      return _fadeRoute(const PrescriptionsScreen());
 
     case AppRoutes.uploadRx:
-      return _slide(const UploadRxScreen());
+      return _slideRoute(const UploadRxScreen());
 
     case AppRoutes.rxDetails:
       final rx = settings.arguments as Prescription?;
-      if (rx == null) return _fade(const PrescriptionsScreen());
-      return _slide(RxDetailsScreen(rx: rx));
+      if (rx == null) return _fadeRoute(const PrescriptionsScreen());
+      return _slideRoute(RxDetailsScreen(rx: rx));
 
     // ── Settings ───────────────────────────────────────────────────
     case AppRoutes.settings:
-      return _fade(const SettingsScreen());
+      return _fadeRoute(const SettingsScreen());
 
     case AppRoutes.savedAddresses:
-      return _slide(const SavedAddressesScreen());
+      return _slideRoute(const SavedAddressesScreen());
 
     // ── 404 fallback ───────────────────────────────────────────────
     default:
-      return _fade(_NotFoundScreen(route: settings.name ?? ''));
+      return _fadeRoute(_NotFoundScreen(route: settings.name ?? ''));
   }
 }
 
 // ── Transition helpers ────────────────────────────────────────────────
 
 /// Fade transition — used for top-level tab switches
-PageRouteBuilder<T> _fade<T>(Widget page) => PageRouteBuilder<T>(
+PageRouteBuilder<T> _fadeRoute<T>(Widget page) => PageRouteBuilder<T>(
       settings: RouteSettings(name: page.runtimeType.toString()),
       transitionDuration: const Duration(milliseconds: 280),
       reverseTransitionDuration: const Duration(milliseconds: 220),
@@ -106,7 +106,7 @@ PageRouteBuilder<T> _fade<T>(Widget page) => PageRouteBuilder<T>(
     );
 
 /// Slide-up transition — used for detail / sub-screens
-PageRouteBuilder<T> _slide<T>(Widget page) => PageRouteBuilder<T>(
+PageRouteBuilder<T> _slideRoute<T>(Widget page) => PageRouteBuilder<T>(
       settings: RouteSettings(name: page.runtimeType.toString()),
       transitionDuration: const Duration(milliseconds: 320),
       reverseTransitionDuration: const Duration(milliseconds: 260),
