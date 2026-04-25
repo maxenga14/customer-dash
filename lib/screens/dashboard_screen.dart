@@ -6,6 +6,7 @@ import '../widgets/animated_bottom_nav.dart';
 import '../widgets/common.dart';
 import '../widgets/product_mock_art.dart';
 import 'checkout_screen.dart';
+import 'orders_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -104,7 +105,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 selectedIndex: selectedIndex,
                 hasCart: cart.isNotEmpty,
                 totalItems: totalCartItems,
-                onTap: (i) => setState(() => selectedIndex = i),
+                onTap: (i) {
+                  setState(() => selectedIndex = i);
+                  if (i == 1) {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(milliseconds: 300),
+                        pageBuilder: (_, animation, __) => FadeTransition(
+                          opacity: animation,
+                          child: const OrdersScreen(),
+                        ),
+                      ),
+                    );
+                  }
+                },
                 onCheckoutTap: openCheckout,
               ),
             )
