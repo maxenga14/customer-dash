@@ -37,13 +37,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
   @override
   void initState() {
     super.initState();
-    _ring1 = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800))
+    _ring1 = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1800))
       ..repeat();
-    _ring2 = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800))
+    _ring2 = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1800))
       ..repeat();
-    _ring3 = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800))
+    _ring3 = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1800))
       ..repeat();
-    _iconEntry = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _iconEntry = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 600));
 
     Future.delayed(const Duration(milliseconds: 180), () {
       if (mounted) _iconEntry.forward();
@@ -69,7 +73,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
     super.dispose();
   }
 
-  double get total => widget.itemsTotal + (widget.isDelivery ? widget.deliveryFee : 0);
+  double get total =>
+      widget.itemsTotal + (widget.isDelivery ? widget.deliveryFee : 0);
 
   @override
   Widget build(BuildContext context) {
@@ -89,31 +94,37 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                     const SizedBox(height: 20),
                     const Text(
                       'Order Confirmed!',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.text),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.text),
                     ),
                     const SizedBox(height: 8),
                     const Text(
                       "Your order has been placed successfully.\nWe've sent a receipt to your email.",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 11.5, color: AppColors.muted, height: 1.5),
+                      style: TextStyle(
+                          fontSize: 11.5, color: AppColors.muted, height: 1.5),
                     ),
                     const SizedBox(height: 22),
                     _orderNumberRow(),
                     const SizedBox(height: 14),
-                    if (widget.isDelivery) _infoCard(
-                      icon: Icons.local_shipping_outlined,
-                      iconBg: const Color(0xFFE9FAF1),
-                      iconColor: AppColors.green,
-                      title: 'Estimated Delivery',
-                      subtitle: 'Today, 2:30 PM – 3:00 PM',
-                    ),
-                    if (!widget.isDelivery) _infoCard(
-                      icon: Icons.storefront_outlined,
-                      iconBg: const Color(0xFFEAF3FF),
-                      iconColor: const Color(0xFF5B8FC9),
-                      title: 'Ready for Pickup',
-                      subtitle: 'MediCare Central Pharmacy · Uhuru Street',
-                    ),
+                    if (widget.isDelivery)
+                      _infoCard(
+                        icon: Icons.local_shipping_outlined,
+                        iconBg: const Color(0xFFE9FAF1),
+                        iconColor: AppColors.green,
+                        title: 'Estimated Delivery',
+                        subtitle: 'Today, 2:30 PM – 3:00 PM',
+                      ),
+                    if (!widget.isDelivery)
+                      _infoCard(
+                        icon: Icons.storefront_outlined,
+                        iconBg: const Color(0xFFEAF3FF),
+                        iconColor: const Color(0xFF5B8FC9),
+                        title: 'Ready for Pickup',
+                        subtitle: 'MediCare Central Pharmacy · Uhuru Street',
+                      ),
                     const SizedBox(height: 14),
                     _deliveryDetailsCard(),
                     const SizedBox(height: 14),
@@ -122,21 +133,30 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () => Navigator.of(context).popUntil((r) => r.isFirst),
+                        onPressed: () =>
+                            Navigator.of(context).popUntil((r) => r.isFirst),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.green,
                           foregroundColor: Colors.white,
                           elevation: 0,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18)),
                         ),
-                        child: const Text('View Order Details', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+                        child: const Text('View Order Details',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 13)),
                       ),
                     ),
                     const SizedBox(height: 14),
                     TextButton(
-                      onPressed: () => Navigator.of(context).popUntil((r) => r.isFirst),
-                      child: const Text('Continue Shopping', style: TextStyle(fontSize: 12.5, color: AppColors.text, fontWeight: FontWeight.w600)),
+                      onPressed: () =>
+                          Navigator.of(context).popUntil((r) => r.isFirst),
+                      child: const Text('Continue Shopping',
+                          style: TextStyle(
+                              fontSize: 12.5,
+                              color: AppColors.text,
+                              fontWeight: FontWeight.w600)),
                     ),
                   ],
                 ),
@@ -160,9 +180,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
           AnimatedBuilder(
             animation: _ring1,
             builder: (_, __) {
-              final v = Tween<double>(begin: 0, end: 1).animate(
-                CurvedAnimation(parent: _ring1, curve: Curves.easeOut),
-              ).value;
+              final v = Tween<double>(begin: 0, end: 1)
+                  .animate(
+                    CurvedAnimation(parent: _ring1, curve: Curves.easeOut),
+                  )
+                  .value;
               return Opacity(
                 opacity: (1 - v).clamp(0.0, 1.0),
                 child: Container(
@@ -183,13 +205,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
           AnimatedBuilder(
             animation: _ring2,
             builder: (_, __) {
-              final raw = (_ring2.value + 0.25) % 1.0;
-              final v = Tween<double>(begin: 0, end: 1).animate(
-                CurvedAnimation(
-                  parent: _ring2,
-                  curve: const Interval(0.0, 1.0, curve: Curves.easeOut),
-                ),
-              ).value;
+              // final raw = (_ring2.value + 0.25) % 1.0;
+              final v = Tween<double>(begin: 0, end: 1)
+                  .animate(
+                    CurvedAnimation(
+                      parent: _ring2,
+                      curve: const Interval(0.0, 1.0, curve: Curves.easeOut),
+                    ),
+                  )
+                  .value;
               return Opacity(
                 opacity: (1 - v).clamp(0.0, 1.0),
                 child: Container(
@@ -208,7 +232,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
           ),
           // Green check circle
           ScaleTransition(
-            scale: CurvedAnimation(parent: _iconEntry, curve: Curves.elasticOut),
+            scale:
+                CurvedAnimation(parent: _iconEntry, curve: Curves.elasticOut),
             child: Container(
               width: 70,
               height: 70,
@@ -216,10 +241,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                 shape: BoxShape.circle,
                 color: AppColors.green,
                 boxShadow: [
-                  BoxShadow(color: AppColors.green.withOpacity(.28), blurRadius: 22, spreadRadius: 2, offset: const Offset(0, 6)),
+                  BoxShadow(
+                      color: AppColors.green.withOpacity(.28),
+                      blurRadius: 22,
+                      spreadRadius: 2,
+                      offset: const Offset(0, 6)),
                 ],
               ),
-              child: const Icon(Icons.check_rounded, color: Colors.white, size: 34),
+              child: const Icon(Icons.check_rounded,
+                  color: Colors.white, size: 34),
             ),
           ),
         ],
@@ -234,16 +264,30 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('ORDER NUMBER', style: TextStyle(fontSize: 9.2, color: AppColors.muted, fontWeight: FontWeight.w700, letterSpacing: .3)),
+              const Text('ORDER NUMBER',
+                  style: TextStyle(
+                      fontSize: 9.2,
+                      color: AppColors.muted,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: .3)),
               const SizedBox(height: 5),
-              Text(widget.orderNumber, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppColors.text)),
+              Text(widget.orderNumber,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.text)),
             ],
           ),
           const Spacer(),
@@ -258,7 +302,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
               children: [
                 Icon(Icons.pending_outlined, size: 12, color: AppColors.yellow),
                 SizedBox(width: 4),
-                Text('PROCESSING', style: TextStyle(fontSize: 9.2, fontWeight: FontWeight.w700, color: AppColors.yellow)),
+                Text('PROCESSING',
+                    style: TextStyle(
+                        fontSize: 9.2,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.yellow)),
               ],
             ),
           ),
@@ -280,7 +328,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: Row(
         children: [
@@ -294,9 +347,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontSize: 10, color: AppColors.muted, fontWeight: FontWeight.w600)),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 10,
+                      color: AppColors.muted,
+                      fontWeight: FontWeight.w600)),
               const SizedBox(height: 4),
-              Text(subtitle, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+              Text(subtitle,
+                  style: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w700)),
             ],
           ),
         ],
@@ -311,24 +370,34 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Delivery Details', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+          const Text('Delivery Details',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
           const SizedBox(height: 14),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.location_on_outlined, size: 17, color: AppColors.muted),
+              const Icon(Icons.location_on_outlined,
+                  size: 17, color: AppColors.muted),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Home Address', style: TextStyle(fontSize: 10, color: AppColors.muted)),
+                  const Text('Home Address',
+                      style: TextStyle(fontSize: 10, color: AppColors.muted)),
                   const SizedBox(height: 3),
-                  Text(widget.deliveryAddress, style: const TextStyle(fontSize: 11.6, fontWeight: FontWeight.w600)),
+                  Text(widget.deliveryAddress,
+                      style: const TextStyle(
+                          fontSize: 11.6, fontWeight: FontWeight.w600)),
                 ],
               ),
             ],
@@ -339,22 +408,35 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.phone_iphone_rounded, size: 17, color: AppColors.muted),
+              const Icon(Icons.phone_iphone_rounded,
+                  size: 17, color: AppColors.muted),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Payment Method', style: TextStyle(fontSize: 10, color: AppColors.muted)),
+                  const Text('Payment Method',
+                      style: TextStyle(fontSize: 10, color: AppColors.muted)),
                   const SizedBox(height: 3),
                   Row(
                     children: [
-                      Text(widget.paymentPhone.isEmpty ? 'M-Pesa (STK Push)' : widget.paymentPhone,
-                          style: const TextStyle(fontSize: 11.6, fontWeight: FontWeight.w600)),
+                      Text(
+                          widget.paymentPhone.isEmpty
+                              ? 'M-Pesa (STK Push)'
+                              : widget.paymentPhone,
+                          style: const TextStyle(
+                              fontSize: 11.6, fontWeight: FontWeight.w600)),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                        decoration: BoxDecoration(color: const Color(0xFFDDF6E9), borderRadius: BorderRadius.circular(20)),
-                        child: const Text('Paid', style: TextStyle(fontSize: 9.2, color: AppColors.green, fontWeight: FontWeight.w700)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 7, vertical: 3),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFDDF6E9),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Text('Paid',
+                            style: TextStyle(
+                                fontSize: 9.2,
+                                color: AppColors.green,
+                                fontWeight: FontWeight.w700)),
                       )
                     ],
                   ),
@@ -374,24 +456,39 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Receipt Summary', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+          const Text('Receipt Summary',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
           const SizedBox(height: 14),
-          _receiptLine('Items (${(widget.itemsTotal / 14).ceil()})', widget.itemsTotal),
+          _receiptLine(
+              'Items (${(widget.itemsTotal / 14).ceil()})', widget.itemsTotal),
           if (widget.isDelivery) ...[
             const SizedBox(height: 8),
             _receiptLine('Delivery Fee', widget.deliveryFee),
           ],
-          const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Divider(height: 1, color: Color(0xFFF0F3F6))),
+          const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Divider(height: 1, color: Color(0xFFF0F3F6))),
           Row(
             children: [
-              const Text('Total Paid', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800)),
+              const Text('Total Paid',
+                  style:
+                      TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800)),
               const Spacer(),
-              Text('\$${total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppColors.green)),
+              Text('\$${total.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.green)),
             ],
           ),
         ],
@@ -402,9 +499,15 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
   Widget _receiptLine(String label, double amount) {
     return Row(
       children: [
-        Text(label, style: const TextStyle(fontSize: 11.5, color: AppColors.muted, fontWeight: FontWeight.w500)),
+        Text(label,
+            style: const TextStyle(
+                fontSize: 11.5,
+                color: AppColors.muted,
+                fontWeight: FontWeight.w500)),
         const Spacer(),
-        Text('\$${amount.toStringAsFixed(2)}', style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
+        Text('\$${amount.toStringAsFixed(2)}',
+            style:
+                const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
       ],
     );
   }
@@ -422,7 +525,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.07), blurRadius: 22, offset: const Offset(0, 8))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.07),
+              blurRadius: 22,
+              offset: const Offset(0, 8))
+        ],
       ),
       child: Row(
         children: List.generate(items.length, (index) {
@@ -431,9 +539,17 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(items[index].$1, size: 20, color: active ? AppColors.green : const Color(0xFFA8B1BE)),
+                Icon(items[index].$1,
+                    size: 20,
+                    color: active ? AppColors.green : const Color(0xFFA8B1BE)),
                 const SizedBox(height: 4),
-                Text(items[index].$2, style: TextStyle(fontSize: 9.2, color: active ? AppColors.green : const Color(0xFFA8B1BE), fontWeight: active ? FontWeight.w700 : FontWeight.w500)),
+                Text(items[index].$2,
+                    style: TextStyle(
+                        fontSize: 9.2,
+                        color:
+                            active ? AppColors.green : const Color(0xFFA8B1BE),
+                        fontWeight:
+                            active ? FontWeight.w700 : FontWeight.w500)),
               ],
             ),
           );

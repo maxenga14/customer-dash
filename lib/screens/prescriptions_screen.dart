@@ -9,11 +9,14 @@ import 'rx_details_screen.dart';
 class PrescriptionsScreen extends StatelessWidget {
   const PrescriptionsScreen({super.key});
 
-  int get _needsAction =>
-      mockPrescriptions.where((p) => p.status == RxStatus.quotationReady).length;
+  int get _needsAction => mockPrescriptions
+      .where((p) => p.status == RxStatus.quotationReady)
+      .length;
   int get _verified =>
       mockPrescriptions.where((p) => p.status == RxStatus.verified).length +
-      mockPrescriptions.where((p) => p.status == RxStatus.quotationReady).length +
+      mockPrescriptions
+          .where((p) => p.status == RxStatus.quotationReady)
+          .length +
       mockPrescriptions.where((p) => p.status == RxStatus.pendingReview).length;
 
   @override
@@ -30,7 +33,7 @@ class PrescriptionsScreen extends StatelessWidget {
                 children: [
                   _statsRow(),
                   const SizedBox(height: 14),
-                  _uploadButton(),
+                  _uploadButton(context),
                   const SizedBox(height: 18),
                   ...mockPrescriptions.map((rx) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
@@ -68,7 +71,8 @@ class PrescriptionsScreen extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UploadRxScreen())),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const UploadRxScreen())),
             child: Container(
               width: 34,
               height: 34,
@@ -76,8 +80,8 @@ class PrescriptionsScreen extends StatelessWidget {
                 color: const Color(0xFFE9FAF1),
                 borderRadius: BorderRadius.circular(11),
               ),
-              child:
-                  const Icon(Icons.add_rounded, size: 18, color: AppColors.green),
+              child: const Icon(Icons.add_rounded,
+                  size: 18, color: AppColors.green),
             ),
           ),
         ],
@@ -89,7 +93,8 @@ class PrescriptionsScreen extends StatelessWidget {
   Widget _statsRow() {
     return Row(
       children: [
-        Expanded(child: _statCard(
+        Expanded(
+            child: _statCard(
           icon: Icons.description_outlined,
           iconBg: const Color(0xFFFFF5DE),
           iconColor: const Color(0xFFF0A529),
@@ -97,7 +102,8 @@ class PrescriptionsScreen extends StatelessWidget {
           value: '$_needsAction',
         )),
         const SizedBox(width: 12),
-        Expanded(child: _statCard(
+        Expanded(
+            child: _statCard(
           icon: Icons.verified_outlined,
           iconBg: const Color(0xFFE9FAF1),
           iconColor: AppColors.green,
@@ -123,8 +129,8 @@ class PrescriptionsScreen extends StatelessWidget {
           Container(
             width: 38,
             height: 38,
-            decoration:
-                BoxDecoration(color: iconBg, borderRadius: BorderRadius.circular(11)),
+            decoration: BoxDecoration(
+                color: iconBg, borderRadius: BorderRadius.circular(11)),
             child: Icon(icon, size: 19, color: iconColor),
           ),
           const SizedBox(width: 10),
@@ -133,11 +139,16 @@ class PrescriptionsScreen extends StatelessWidget {
             children: [
               Text(label,
                   style: const TextStyle(
-                      fontSize: 9, color: AppColors.muted, fontWeight: FontWeight.w700, letterSpacing: .3)),
+                      fontSize: 9,
+                      color: AppColors.muted,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: .3)),
               const SizedBox(height: 4),
               Text(value,
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.text)),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.text)),
             ],
           ),
         ],
@@ -146,11 +157,12 @@ class PrescriptionsScreen extends StatelessWidget {
   }
 
   // ── Upload button ─────────────────────────────────────────────────────
-  Widget _uploadButton() {
+  Widget _uploadButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UploadRxScreen())),
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const UploadRxScreen())),
         icon: const Icon(Icons.upload_rounded, size: 18),
         label: const Text('Upload New Prescription',
             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
@@ -211,7 +223,8 @@ class _RxCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text('Uploaded: ${rx.uploadedAt}',
-                    style: const TextStyle(fontSize: 10.2, color: AppColors.muted)),
+                    style: const TextStyle(
+                        fontSize: 10.2, color: AppColors.muted)),
                 const SizedBox(height: 6),
                 _bodyContent(),
                 const SizedBox(height: 10),
@@ -248,7 +261,8 @@ class _RxCard extends StatelessWidget {
       case RxStatus.quotationReady:
         return RichText(
           text: TextSpan(
-            style: const TextStyle(fontSize: 11, color: AppColors.muted, height: 1.4),
+            style: const TextStyle(
+                fontSize: 11, color: AppColors.muted, height: 1.4),
             children: [
               TextSpan(text: '${rx.quotationPharmacy} offered '),
               TextSpan(
@@ -261,15 +275,18 @@ class _RxCard extends StatelessWidget {
         );
       case RxStatus.pendingReview:
         return Text(rx.statusNote ?? '',
-            style: const TextStyle(fontSize: 10.8, color: AppColors.muted, height: 1.45));
+            style: const TextStyle(
+                fontSize: 10.8, color: AppColors.muted, height: 1.45));
       case RxStatus.verified:
         return Text(
           'Order ${rx.linkedOrderNumber} completed via\n${rx.linkedPharmacy}',
-          style: const TextStyle(fontSize: 10.8, color: AppColors.muted, height: 1.45),
+          style: const TextStyle(
+              fontSize: 10.8, color: AppColors.muted, height: 1.45),
         );
       case RxStatus.rejected:
         return Text(rx.statusNote ?? '',
-            style: const TextStyle(fontSize: 10.8, color: Color(0xFFD14A4A), height: 1.45));
+            style: const TextStyle(
+                fontSize: 10.8, color: Color(0xFFD14A4A), height: 1.45));
     }
   }
 
@@ -290,14 +307,16 @@ class _RxCard extends StatelessWidget {
         const Spacer(),
         // Right CTA — only for quotationReady and verified
         if (rx.status == RxStatus.quotationReady)
-          Builder(builder: (ctx) => _ctaButton(
-            label: 'Review',
-            onTap: () => Navigator.push(
-              ctx,
-              MaterialPageRoute(builder: (_) => RxDetailsScreen(rx: rx)),
-            ),
-            filled: true,
-          )),
+          Builder(
+              builder: (ctx) => _ctaButton(
+                    label: 'Review',
+                    onTap: () => Navigator.push(
+                      ctx,
+                      MaterialPageRoute(
+                          builder: (_) => RxDetailsScreen(rx: rx)),
+                    ),
+                    filled: true,
+                  )),
         if (rx.status == RxStatus.verified)
           _ctaButton(
             label: 'Reorder',

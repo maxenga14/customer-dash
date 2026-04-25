@@ -12,28 +12,28 @@ import 'screens/settings_screen.dart';
 import 'screens/saved_addresses_screen.dart';
 import 'screens/checkout_screen.dart';
 import 'models/prescription.dart';
+import 'data/orders_data.dart';
 
 // ── Named route constants ─────────────────────────────────────────────
 class AppRoutes {
   AppRoutes._();
 
-  static const splash        = '/';
-  static const dashboard     = '/dashboard';
-  static const orders        = '/orders';
-  static const orderDetails  = '/orders/details';
-  static const orderConfirm  = '/orders/confirm';
-  static const checkout      = '/checkout';
+  static const splash = '/';
+  static const dashboard = '/dashboard';
+  static const orders = '/orders';
+  static const orderDetails = '/orders/details';
+  static const orderConfirm = '/orders/confirm';
+  static const checkout = '/checkout';
   static const prescriptions = '/prescriptions';
-  static const uploadRx      = '/prescriptions/upload';
-  static const rxDetails     = '/prescriptions/details';
-  static const settings      = '/settings';
-  static const savedAddresses= '/settings/addresses';
+  static const uploadRx = '/prescriptions/upload';
+  static const rxDetails = '/prescriptions/details';
+  static const settings = '/settings';
+  static const savedAddresses = '/settings/addresses';
 }
 
 // ── Route generator ───────────────────────────────────────────────────
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-
     // ── Splash / entry ─────────────────────────────────────────────
     case AppRoutes.splash:
       return _fade(const _SplashScreen());
@@ -48,10 +48,19 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case AppRoutes.orderDetails:
       final orderId = settings.arguments as String? ?? '';
-      return _slide(OrderDetailsScreen(orderId: orderId));
+      return _slide(OrderDetailsScreen(
+          order: mockOrders.firstWhere((o) => o.orderNumber == orderId)));
 
     case AppRoutes.orderConfirm:
-      return _slide(const OrderConfirmationScreen());
+      final args = settings.arguments as Map<String, dynamic>? ?? {};
+      return _slide(OrderConfirmationScreen(
+        orderNumber: args['orderNumber'] as String? ?? 'UNK-000',
+        itemsTotal: args['itemsTotal'] as double? ?? 0.0,
+        deliveryFee: args['deliveryFee'] as double? ?? 0.0,
+        deliveryAddress: args['deliveryAddress'] as String? ?? '',
+        paymentPhone: args['paymentPhone'] as String? ?? '',
+        isDelivery: args['isDelivery'] as bool? ?? true,
+      ));
 
     // ── Checkout ───────────────────────────────────────────────────
     case AppRoutes.checkout:
@@ -106,7 +115,8 @@ PageRouteBuilder<T> _slide<T>(Widget page) => PageRouteBuilder<T>(
         position: Tween(
           begin: const Offset(1.0, 0.0),
           end: Offset.zero,
-        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+        ).animate(
+            CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
         child: child,
       ),
     );
@@ -130,10 +140,10 @@ class _SplashScreenState extends State<_SplashScreen>
     super.initState();
     _ctrl = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 900));
-    _scale = Tween<double>(begin: .7, end: 1.0).animate(
-        CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack));
-    _fade = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: _ctrl, curve: const Interval(.0, .6)));
+    _scale = Tween<double>(begin: .7, end: 1.0)
+        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack));
+    _fade = Tween<double>(begin: 0, end: 1)
+        .animate(CurvedAnimation(parent: _ctrl, curve: const Interval(.0, .6)));
     _ctrl.forward();
 
     // Navigate to dashboard after splash
@@ -288,12 +298,11 @@ class _NotFoundScreen extends StatelessWidget {
             const Icon(Icons.map_outlined, size: 48, color: Color(0xFF8C97A8)),
             const SizedBox(height: 16),
             const Text('Page not found',
-                style:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
             const SizedBox(height: 6),
             Text('No route defined for "$route"',
-                style: const TextStyle(
-                    fontSize: 11.5, color: Color(0xFF8C97A8))),
+                style:
+                    const TextStyle(fontSize: 11.5, color: Color(0xFF8C97A8))),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => Navigator.pushNamedAndRemoveUntil(

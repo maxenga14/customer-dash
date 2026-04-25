@@ -52,8 +52,9 @@ class AppNavigator {
 
   static NavigatorState get _nav => key.currentState!;
 
-  static Future<T?> push<T>(Widget screen) =>
-      _nav.push(generateRoute(RouteSettings(name: screen.runtimeType.toString())));
+  static Future<T?> push<T>(Widget screen) => _nav.push(
+      generateRoute(RouteSettings(name: screen.runtimeType.toString()))
+          as Route<T>);
 
   static Future<T?> pushNamed<T>(String routeName, {Object? arguments}) =>
       _nav.pushNamed<T>(routeName, arguments: arguments);

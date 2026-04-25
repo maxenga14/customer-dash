@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/mock_data.dart';
+import '../data/orders_data.dart';
 import '../models/cart_item.dart';
 import '../theme/app_theme.dart';
 import '../widgets/animated_bottom_nav.dart';
@@ -15,10 +16,10 @@ import 'upload_rx_screen.dart';
 // ── Dashboard user state ──────────────────────────────────────────────────
 // In a real app these come from backend/auth. Toggled here for demo.
 class _AppState {
-  static bool isNewUser        = false;  // true  → no orders/history
-  static bool hasActiveOrder   = true;   // false → hide tracking card
-  static bool hasPendingQuote  = true;   // false → hide quotation card
-  static bool pharmacySelected = true;   // false → show "find pharmacy" banner
+  static bool isNewUser = false; // true  → no orders/history
+  static bool hasActiveOrder = true; // false → hide tracking card
+  static bool hasPendingQuote = true; // false → hide quotation card
+  static bool pharmacySelected = true; // false → show "find pharmacy" banner
 }
 
 // ── Category meta ─────────────────────────────────────────────────────────
@@ -29,11 +30,11 @@ class _Cat {
 }
 
 const _categories = [
-  _Cat('All',       Icons.apps_rounded),
+  _Cat('All', Icons.apps_rounded),
   _Cat('Medicines', Icons.medication_outlined),
-  _Cat('Vitamins',  Icons.health_and_safety_outlined),
+  _Cat('Vitamins', Icons.health_and_safety_outlined),
   _Cat('Baby Care', Icons.child_friendly_outlined),
-  _Cat('Personal',  Icons.spa_outlined),
+  _Cat('Personal', Icons.spa_outlined),
 ];
 
 // ── Screen ────────────────────────────────────────────────────────────────
@@ -74,15 +75,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         transitionDuration: const Duration(milliseconds: 320),
         reverseTransitionDuration: const Duration(milliseconds: 260),
         pageBuilder: (_, animation, __) => SlideTransition(
-          position: Tween(begin: const Offset(1, 0), end: Offset.zero)
-              .animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
-          child: CheckoutScreen(initialItems: cart.map((e) => e.copy()).toList()),
+          position: Tween(begin: const Offset(1, 0), end: Offset.zero).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+          child:
+              CheckoutScreen(initialItems: cart.map((e) => e.copy()).toList()),
         ),
       ),
     );
     if (result is List<CartItem>) {
       setState(() {
-        cart..clear()..addAll(result);
+        cart
+          ..clear()
+          ..addAll(result);
       });
     }
   }
@@ -129,7 +133,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         const SizedBox(height: 12),
                         _activeOrderCard(),
                       ],
-                      if (!_AppState.isNewUser && _AppState.hasPendingQuote) ...[
+                      if (!_AppState.isNewUser &&
+                          _AppState.hasPendingQuote) ...[
                         const SizedBox(height: 10),
                         _quotationCard(),
                       ],
@@ -155,7 +160,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             // ── Bottom nav overlay ──
             Positioned(
-              left: 0, right: 0, bottom: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
               child: AnimatedBottomNav(
                 selectedIndex: selectedIndex,
                 hasCart: cart.isNotEmpty,
@@ -188,7 +195,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Row(
             children: [
               Container(
-                width: 36, height: 36,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
                     color: Colors.white.withOpacity(.18),
                     shape: BoxShape.circle),
@@ -215,7 +223,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Stack(
                 children: [
                   Container(
-                    width: 32, height: 32,
+                    width: 32,
+                    height: 32,
                     decoration: BoxDecoration(
                         color: Colors.white.withOpacity(.16),
                         borderRadius: BorderRadius.circular(11)),
@@ -224,14 +233,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   if (!_AppState.isNewUser)
                     Positioned(
-                      right: 6, top: 6,
+                      right: 6,
+                      top: 6,
                       child: Container(
-                        width: 7, height: 7,
+                        width: 7,
+                        height: 7,
                         decoration: BoxDecoration(
                             color: const Color(0xFFFFD166),
                             shape: BoxShape.circle,
-                            border: Border.all(
-                                color: AppColors.green, width: 1.2)),
+                            border:
+                                Border.all(color: AppColors.green, width: 1.2)),
                       ),
                     ),
                 ],
@@ -256,8 +267,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Text('Search medicines, vitamins…',
                         style: TextStyle(color: Colors.white70, fontSize: 12)),
                   ),
-                  Icon(Icons.mic_none_rounded,
-                      color: Colors.white54, size: 17),
+                  Icon(Icons.mic_none_rounded, color: Colors.white54, size: 17),
                 ],
               ),
             ),
@@ -286,7 +296,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Row(
             children: [
               Container(
-                width: 38, height: 38,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
                     color: Colors.white.withOpacity(.2),
                     shape: BoxShape.circle),
@@ -305,8 +316,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             fontWeight: FontWeight.w700)),
                     SizedBox(height: 3),
                     Text('Tap to scan pharmacies near you',
-                        style: TextStyle(
-                            color: Colors.white70, fontSize: 10.5)),
+                        style:
+                            TextStyle(color: Colors.white70, fontSize: 10.5)),
                   ],
                 ),
               ),
@@ -338,7 +349,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Row(
           children: [
             Container(
-              width: 28, height: 28,
+              width: 28,
+              height: 28,
               decoration: BoxDecoration(
                   color: const Color(0xFFDDF6E9),
                   borderRadius: BorderRadius.circular(9)),
@@ -418,7 +430,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             Center(
               child: Container(
-                  width: 40, height: 4,
+                  width: 40,
+                  height: 4,
                   decoration: BoxDecoration(
                       color: const Color(0xFFDDE3ED),
                       borderRadius: BorderRadius.circular(4))),
@@ -440,7 +453,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Row(
                 children: [
                   Container(
-                    width: 42, height: 42,
+                    width: 42,
+                    height: 42,
                     decoration: BoxDecoration(
                         color: const Color(0xFFDDF6E9),
                         borderRadius: BorderRadius.circular(13)),
@@ -494,7 +508,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _quickActions() {
     return Row(
       children: [
-        Expanded(child: _actionCard(
+        Expanded(
+            child: _actionCard(
           label: 'Upload Rx',
           icon: Icons.cloud_upload_rounded,
           bg: const Color(0xFFF2FAF6),
@@ -502,23 +517,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
               MaterialPageRoute(builder: (_) => const UploadRxScreen())),
         )),
         const SizedBox(width: 12),
-        Expanded(child: _actionCard(
+        Expanded(
+            child: _actionCard(
           label: 'My Orders',
           icon: Icons.inventory_2_rounded,
           bg: const Color(0xFFFFF8E9),
-          onTap: () => Navigator.push(context,
+          onTap: () => Navigator.push(
+              context,
               PageRouteBuilder(
                 transitionDuration: const Duration(milliseconds: 300),
-                pageBuilder: (_, anim, __) => FadeTransition(
-                    opacity: anim, child: const OrdersScreen()),
+                pageBuilder: (_, anim, __) =>
+                    FadeTransition(opacity: anim, child: const OrdersScreen()),
               )),
         )),
       ],
     );
   }
 
-  Widget _actionCard({required String label, required IconData icon,
-      required Color bg, required VoidCallback onTap}) {
+  Widget _actionCard(
+      {required String label,
+      required IconData icon,
+      required Color bg,
+      required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -527,7 +547,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           children: [
             Container(
-              width: 36, height: 36,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                   color: bg, borderRadius: BorderRadius.circular(12)),
               child: Icon(icon, size: 18, color: AppColors.green),
@@ -545,10 +566,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // ── Active order tracking card ────────────────────────────────────────
   Widget _activeOrderCard() {
     return GestureDetector(
-      onTap: () => Navigator.push(context,
+      onTap: () => Navigator.push(
+          context,
           MaterialPageRoute(
-              builder: (_) =>
-                  OrderDetailsScreen(orderId: 'ORD-8832'))),
+              builder: (_) => OrderDetailsScreen(order: mockOrders.first))),
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: cardDecoration(),
@@ -571,12 +592,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(width: 8),
                 const Text('Order #ORD-8832',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 12.0)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
                 const Spacer(),
                 const Text('Est. 15 mins',
-                    style:
-                        TextStyle(fontSize: 9.5, color: AppColors.muted)),
+                    style: TextStyle(fontSize: 9.5, color: AppColors.muted)),
                 const SizedBox(width: 4),
                 const Icon(Icons.chevron_right_rounded,
                     size: 16, color: AppColors.muted),
@@ -625,8 +645,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             style: TextStyle(
                 fontSize: 8.5,
                 color: done ? AppColors.green : AppColors.muted,
-                fontWeight:
-                    done ? FontWeight.w700 : FontWeight.w400)),
+                fontWeight: done ? FontWeight.w700 : FontWeight.w400)),
       ],
     );
   }
@@ -651,7 +670,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Row(
           children: [
             Container(
-              width: 36, height: 36,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                   color: const Color(0xFFDDF6E9),
                   borderRadius: BorderRadius.circular(11)),
@@ -664,18 +684,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Quotation Ready to Review',
-                      style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w700)),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
                   SizedBox(height: 3),
                   Text('City Care Pharmacy has priced your Rx',
-                      style:
-                          TextStyle(fontSize: 10, color: AppColors.muted)),
+                      style: TextStyle(fontSize: 10, color: AppColors.muted)),
                 ],
               ),
             ),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
               decoration: BoxDecoration(
                   color: AppColors.green,
                   borderRadius: BorderRadius.circular(20)),
@@ -718,17 +736,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const Text(
                     'Upload your prescription and get a\nquotation from City Care Pharmacy.',
                     style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 10.5,
-                        height: 1.55)),
+                        color: Colors.white70, fontSize: 10.5, height: 1.55)),
                 const SizedBox(height: 14),
                 GestureDetector(
-                  onTap: () => Navigator.push(context,
+                  onTap: () => Navigator.push(
+                      context,
                       MaterialPageRoute(
                           builder: (_) => const UploadRxScreen())),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20)),
@@ -767,7 +784,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Row(
                   children: [
                     Container(
-                      width: 46, height: 46,
+                      width: 46,
+                      height: 46,
                       decoration: BoxDecoration(
                           color: p.imageBg,
                           borderRadius: BorderRadius.circular(14)),
@@ -814,7 +832,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         GestureDetector(
                           onTap: () => _addToCart(p),
                           child: Container(
-                            width: 28, height: 28,
+                            width: 28,
+                            height: 28,
                             decoration: BoxDecoration(
                                 color: AppColors.green,
                                 borderRadius: BorderRadius.circular(9)),
@@ -841,8 +860,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             const Expanded(
               child: Text('Browse Products',
-                  style: TextStyle(
-                      fontSize: 13.5, fontWeight: FontWeight.w800)),
+                  style:
+                      TextStyle(fontSize: 13.5, fontWeight: FontWeight.w800)),
             ),
             Text(
               '${filteredProducts(_selectedCategory).length} items',
@@ -860,16 +879,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               return Padding(
                 padding: const EdgeInsets.only(right: 8),
                 child: GestureDetector(
-                  onTap: () =>
-                      setState(() => _selectedCategory = cat.label),
+                  onTap: () => setState(() => _selectedCategory = cat.label),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 9),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                     decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.green
-                          : Colors.white,
+                      color: isSelected ? AppColors.green : Colors.white,
                       borderRadius: BorderRadius.circular(25),
                       border: Border.all(
                         color: isSelected
@@ -889,9 +905,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       children: [
                         Icon(cat.icon,
                             size: 13,
-                            color: isSelected
-                                ? Colors.white
-                                : AppColors.muted),
+                            color: isSelected ? Colors.white : AppColors.muted),
                         const SizedBox(width: 5),
                         Text(cat.label,
                             style: TextStyle(
@@ -927,8 +941,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   size: 40, color: AppColors.muted),
               const SizedBox(height: 10),
               Text('No $_selectedCategory items available',
-                  style: const TextStyle(
-                      fontSize: 13, color: AppColors.muted)),
+                  style: const TextStyle(fontSize: 13, color: AppColors.muted)),
             ],
           ),
         ),
@@ -938,7 +951,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // 2-column grid
     final rows = <Widget>[];
     for (int i = 0; i < products.length; i += 2) {
-      final left  = products[i];
+      final left = products[i];
       final right = i + 1 < products.length ? products[i + 1] : null;
       rows.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -967,11 +980,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Row(
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                 decoration: BoxDecoration(
-                    color: p.tagBg,
-                    borderRadius: BorderRadius.circular(7)),
+                    color: p.tagBg, borderRadius: BorderRadius.circular(7)),
                 child: Text(p.tag,
                     style: TextStyle(
                         fontSize: 8.5,
@@ -981,23 +992,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const Spacer(),
               // Category micro label
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 decoration: BoxDecoration(
                     color: AppColors.bg,
                     borderRadius: BorderRadius.circular(5)),
                 child: Text(p.category,
-                    style: const TextStyle(
-                        fontSize: 7.5, color: AppColors.muted)),
+                    style:
+                        const TextStyle(fontSize: 7.5, color: AppColors.muted)),
               ),
             ],
           ),
           const SizedBox(height: 10),
           Center(
             child: SizedBox(
-                width: 56,
-                height: 56,
-                child: ProductMockArt(variant: idx % 6)),
+                width: 56, height: 56, child: ProductMockArt(variant: idx % 6)),
           ),
           const SizedBox(height: 10),
           Text(p.name.replaceAll('\n', ' '),
@@ -1006,8 +1014,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontSize: 11, fontWeight: FontWeight.w700, height: 1.2)),
           const SizedBox(height: 3),
           Text(p.subtitle,
-              style: const TextStyle(
-                  fontSize: 9.5, color: AppColors.muted)),
+              style: const TextStyle(fontSize: 9.5, color: AppColors.muted)),
           const SizedBox(height: 10),
           Row(
             children: [
@@ -1019,12 +1026,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onTap: () => _addToCart(p),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
-                  width: 26, height: 26,
+                  width: 26,
+                  height: 26,
                   decoration: BoxDecoration(
                       color: AppColors.green,
                       borderRadius: BorderRadius.circular(10)),
-                  child: const Icon(Icons.add,
-                      color: Colors.white, size: 16),
+                  child: const Icon(Icons.add, color: Colors.white, size: 16),
                 ),
               ),
             ],

@@ -78,7 +78,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
                 color: const Color(0xFFDDE3ED),
                 borderRadius: BorderRadius.circular(4),
@@ -86,9 +87,11 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
             ),
             const SizedBox(height: 20),
             Container(
-              width: 56, height: 56,
+              width: 56,
+              height: 56,
               decoration: const BoxDecoration(
-                color: Color(0xFFFFEEEE), shape: BoxShape.circle,
+                color: Color(0xFFFFEEEE),
+                shape: BoxShape.circle,
               ),
               child: const Icon(Icons.delete_outline_rounded,
                   size: 26, color: Color(0xFFD14A4A)),
@@ -99,7 +102,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
             const SizedBox(height: 8),
             const Text('This address will be permanently removed.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: AppColors.muted, height: 1.5)),
+                style: TextStyle(
+                    fontSize: 12, color: AppColors.muted, height: 1.5)),
             const SizedBox(height: 22),
             Row(
               children: [
@@ -135,7 +139,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                           borderRadius: BorderRadius.circular(14)),
                     ),
                     child: const Text('Delete',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 13)),
                   ),
                 ),
               ],
@@ -148,7 +153,7 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
 
   void _showAddressForm({SavedAddress? editing}) {
     final labelCtrl = TextEditingController(text: editing?.label ?? '');
-    final nameCtrl  = TextEditingController(text: editing?.name ?? '');
+    final nameCtrl = TextEditingController(text: editing?.name ?? '');
     final line1Ctrl = TextEditingController(text: editing?.line1 ?? '');
     final line2Ctrl = TextEditingController(text: editing?.line2 ?? '');
     final phoneCtrl = TextEditingController(text: editing?.phone ?? '');
@@ -163,7 +168,9 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
       builder: (ctx) => Padding(
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
-          left: 20, right: 20, top: 20,
+          left: 20,
+          right: 20,
+          top: 20,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -171,7 +178,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
           children: [
             Center(
               child: Container(
-                width: 40, height: 4,
+                width: 40,
+                height: 4,
                 decoration: BoxDecoration(
                   color: const Color(0xFFDDE3ED),
                   borderRadius: BorderRadius.circular(4),
@@ -180,7 +188,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
             ),
             const SizedBox(height: 16),
             Text(editing == null ? 'Add New Address' : 'Edit Address',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
             const SizedBox(height: 18),
             _sheetField(labelCtrl, 'Address Label', 'e.g. Home, Office'),
             const SizedBox(height: 12),
@@ -199,19 +208,28 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                   Navigator.pop(ctx);
                   if (editing == null) {
                     setState(() => _addresses.add(SavedAddress(
-                      id: DateTime.now().millisecondsSinceEpoch.toString(),
-                      label: labelCtrl.text.isEmpty ? 'New Address' : labelCtrl.text,
-                      iconData: Icons.location_on_outlined,
-                      name: nameCtrl.text,
-                      line1: line1Ctrl.text,
-                      line2: line2Ctrl.text,
-                      phone: phoneCtrl.text,
-                    )));
+                          id: DateTime.now().millisecondsSinceEpoch.toString(),
+                          label: labelCtrl.text.isEmpty
+                              ? 'New Address'
+                              : labelCtrl.text,
+                          iconData: Icons.location_on_outlined,
+                          name: nameCtrl.text,
+                          line1: line1Ctrl.text,
+                          line2: line2Ctrl.text,
+                          phone: phoneCtrl.text,
+                        )));
                   } else {
                     setState(() {
-                      editing.line1 = line1Ctrl.text;
-                      editing.line2 = line2Ctrl.text;
-                      editing.phone = phoneCtrl.text;
+                      editing = SavedAddress(
+                        id: editing!.id,
+                        label: editing!.label,
+                        iconData: editing!.iconData,
+                        name: editing!.name,
+                        line1: line1Ctrl.text,
+                        line2: line2Ctrl.text,
+                        phone: phoneCtrl.text,
+                        isDefault: editing!.isDefault,
+                      );
                     });
                   }
                 },
@@ -225,7 +243,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                 ),
                 child: Text(
                   editing == null ? 'Save Address' : 'Update Address',
-                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      fontSize: 13, fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -241,7 +260,9 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
       children: [
         Text(label,
             style: const TextStyle(
-                fontSize: 11.5, fontWeight: FontWeight.w700, color: AppColors.text)),
+                fontSize: 11.5,
+                fontWeight: FontWeight.w700,
+                color: AppColors.text)),
         const SizedBox(height: 6),
         TextField(
           controller: ctrl,
@@ -313,7 +334,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
             onTap: () => Navigator.pop(context),
             borderRadius: BorderRadius.circular(12),
             child: Container(
-              width: 34, height: 34,
+              width: 34,
+              height: 34,
               decoration: BoxDecoration(
                 color: AppColors.bg,
                 borderRadius: BorderRadius.circular(11),
@@ -326,7 +348,9 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
           const Expanded(
             child: Text('Saved Addresses',
                 style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w800, color: AppColors.text)),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.text)),
           ),
         ],
       ),
@@ -351,7 +375,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
         child: Column(
           children: [
             Container(
-              width: 40, height: 40,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: AppColors.green,
                 shape: BoxShape.circle,
@@ -362,7 +387,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
                       offset: const Offset(0, 4)),
                 ],
               ),
-              child: const Icon(Icons.add_rounded, color: Colors.white, size: 22),
+              child:
+                  const Icon(Icons.add_rounded, color: Colors.white, size: 22),
             ),
             const SizedBox(height: 10),
             const Text('Add New Address',
@@ -381,11 +407,11 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.location_off_outlined, size: 48, color: AppColors.muted),
+          const Icon(Icons.location_off_outlined,
+              size: 48, color: AppColors.muted),
           const SizedBox(height: 14),
           const Text('No addresses saved',
-              style: TextStyle(
-                  fontSize: 14, fontWeight: FontWeight.w700)),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
           const SizedBox(height: 6),
           const Text('Add your first delivery address',
               style: TextStyle(fontSize: 11.5, color: AppColors.muted)),
@@ -452,7 +478,8 @@ class _AddressCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  width: 32, height: 32,
+                  width: 32,
+                  height: 32,
                   decoration: BoxDecoration(
                     color: address.isDefault
                         ? const Color(0xFFDDF6E9)
@@ -461,7 +488,9 @@ class _AddressCard extends StatelessWidget {
                   ),
                   child: Icon(address.iconData,
                       size: 17,
-                      color: address.isDefault ? AppColors.green : AppColors.muted),
+                      color: address.isDefault
+                          ? AppColors.green
+                          : AppColors.muted),
                 ),
                 const SizedBox(width: 8),
                 Text(address.label,
@@ -470,7 +499,8 @@ class _AddressCard extends StatelessWidget {
                 if (address.isDefault) ...[
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
                       color: AppColors.green,
                       borderRadius: BorderRadius.circular(20),
@@ -489,7 +519,8 @@ class _AddressCard extends StatelessWidget {
                   onTap: onEdit,
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
-                    width: 30, height: 30,
+                    width: 30,
+                    height: 30,
                     decoration: BoxDecoration(
                       color: AppColors.bg,
                       borderRadius: BorderRadius.circular(9),
@@ -504,7 +535,8 @@ class _AddressCard extends StatelessWidget {
                   onTap: onDelete,
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
-                    width: 30, height: 30,
+                    width: 30,
+                    height: 30,
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFEEEE),
                       borderRadius: BorderRadius.circular(9),
@@ -520,7 +552,9 @@ class _AddressCard extends StatelessWidget {
             // ── Address details
             Text(address.name,
                 style: const TextStyle(
-                    fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.text)),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.text)),
             const SizedBox(height: 3),
             Text(address.line1,
                 style: const TextStyle(fontSize: 11.2, color: AppColors.muted)),
@@ -529,10 +563,12 @@ class _AddressCard extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.phone_outlined, size: 13, color: AppColors.muted),
+                const Icon(Icons.phone_outlined,
+                    size: 13, color: AppColors.muted),
                 const SizedBox(width: 5),
                 Text(address.phone,
-                    style: const TextStyle(fontSize: 11.2, color: AppColors.muted)),
+                    style: const TextStyle(
+                        fontSize: 11.2, color: AppColors.muted)),
               ],
             ),
 
