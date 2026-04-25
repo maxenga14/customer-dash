@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/cart_item.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'order_confirmation_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key, required this.initialItems});
@@ -206,7 +207,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context, <CartItem>[]),
+                        onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration: const Duration(milliseconds: 380),
+                            pageBuilder: (_, animation, __) => FadeTransition(
+                              opacity: animation,
+                              child: OrderConfirmationScreen(
+                                orderNumber: '#ORD-${DateTime.now().millisecondsSinceEpoch % 90000 + 10000}',
+                                itemsTotal: subtotal,
+                                deliveryFee: deliveryFee,
+                                deliveryAddress: addressController.text,
+                                paymentPhone: phoneController.text.isEmpty ? 'M-Pesa (STK Push)' : phoneController.text,
+                                isDelivery: isDelivery,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.green,
                           foregroundColor: Colors.white,
