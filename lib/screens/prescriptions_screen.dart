@@ -3,6 +3,7 @@ import '../data/prescriptions_data.dart';
 import '../models/prescription.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'upload_rx_screen.dart';
 
 class PrescriptionsScreen extends StatelessWidget {
   const PrescriptionsScreen({super.key});
@@ -66,7 +67,7 @@ class PrescriptionsScreen extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UploadRxScreen())),
             child: Container(
               width: 34,
               height: 34,
@@ -148,7 +149,7 @@ class PrescriptionsScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: () {},
+        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UploadRxScreen())),
         icon: const Icon(Icons.upload_rounded, size: 18),
         label: const Text('Upload New Prescription',
             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
