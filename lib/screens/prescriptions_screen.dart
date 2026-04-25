@@ -4,6 +4,7 @@ import '../models/prescription.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'upload_rx_screen.dart';
+import 'rx_details_screen.dart';
 
 class PrescriptionsScreen extends StatelessWidget {
   const PrescriptionsScreen({super.key});
@@ -289,11 +290,14 @@ class _RxCard extends StatelessWidget {
         const Spacer(),
         // Right CTA — only for quotationReady and verified
         if (rx.status == RxStatus.quotationReady)
-          _ctaButton(
+          Builder(builder: (ctx) => _ctaButton(
             label: 'Review',
-            onTap: () {},
+            onTap: () => Navigator.push(
+              ctx,
+              MaterialPageRoute(builder: (_) => RxDetailsScreen(rx: rx)),
+            ),
             filled: true,
-          ),
+          )),
         if (rx.status == RxStatus.verified)
           _ctaButton(
             label: 'Reorder',
