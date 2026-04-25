@@ -3,6 +3,7 @@ import '../data/orders_data.dart';
 import '../models/order.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'order_details_screen.dart';
 import '../widgets/product_mock_art.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -386,19 +387,29 @@ class _OrderCard extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.green,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+            child: Builder(
+              builder: (ctx) => ElevatedButton(
+                onPressed: () => Navigator.push(
+                  ctx,
+                  MaterialPageRoute(
+                    builder: (_) => OrderDetailsScreen(
+                      order: order,
+                      hasPrescription: order.orderNumber == '#ORD-8478',
+                    ),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.green,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('View Details',
+                    style: TextStyle(
+                        fontSize: 11.5, fontWeight: FontWeight.w700)),
               ),
-              child: const Text('View Details',
-                  style: TextStyle(
-                      fontSize: 11.5, fontWeight: FontWeight.w700)),
             ),
           ),
         ],
@@ -426,19 +437,29 @@ class _OrderCard extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.green,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+            child: Builder(
+              builder: (ctx) => ElevatedButton(
+                onPressed: () => Navigator.push(
+                  ctx,
+                  MaterialPageRoute(
+                    builder: (_) => OrderDetailsScreen(
+                      order: order,
+                      hasPrescription: false,
+                    ),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.green,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('View Details',
+                    style: TextStyle(
+                        fontSize: 11.5, fontWeight: FontWeight.w700)),
               ),
-              child: const Text('View Details',
-                  style: TextStyle(
-                      fontSize: 11.5, fontWeight: FontWeight.w700)),
             ),
           ),
         ],
