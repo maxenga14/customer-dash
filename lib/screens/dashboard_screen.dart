@@ -9,6 +9,8 @@ import 'checkout_screen.dart';
 import 'orders_screen.dart';
 import 'prescriptions_screen.dart';
 import 'settings_screen.dart';
+import 'order_details_screen.dart';
+import 'upload_rx_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -219,26 +221,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _smallAction(String title, IconData icon, Color bg) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      decoration: cardDecoration(),
-      child: Column(
-        children: [
-          Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(11)),
-            child: Icon(icon, size: 18, color: AppColors.green),
-          ),
-          const SizedBox(height: 10),
-          Text(title, style: const TextStyle(fontSize: 11.4, fontWeight: FontWeight.w600)),
-        ],
+    return GestureDetector(
+      onTap: () {
+        if (title == 'Upload Rx') {
+          Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const UploadRxScreen()));
+        } else if (title == 'My Orders') {
+          Navigator.push(context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 300),
+              pageBuilder: (_, animation, __) => FadeTransition(
+                opacity: animation, child: const OrdersScreen()),
+            ));
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: cardDecoration(),
+        child: Column(
+          children: [
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(11)),
+              child: Icon(icon, size: 18, color: AppColors.green),
+            ),
+            const SizedBox(height: 10),
+            Text(title, style: const TextStyle(fontSize: 11.4, fontWeight: FontWeight.w600)),
+          ],
+        ),
       ),
     );
   }
 
   Widget _routeCard() {
-    return Container(
+    return GestureDetector(
+      onTap: () => Navigator.push(context,
+        MaterialPageRoute(builder: (_) => OrderDetailsScreen(orderId: 'ORD-8832'))),
+      child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(11),
       decoration: cardDecoration(),
@@ -267,11 +287,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           )
         ],
       ),
+      ),  // GestureDetector
     );
   }
 
   Widget _quotationCard() {
-    return Container(
+    return GestureDetector(
+      onTap: () => Navigator.push(context,
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 300),
+          pageBuilder: (_, animation, __) => FadeTransition(
+            opacity: animation, child: const PrescriptionsScreen()),
+        )),
+      child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(11),
       decoration: cardDecoration(),
@@ -292,6 +320,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Icon(Icons.chevron_right_rounded, color: Color(0xFF97A2B5))
         ],
       ),
+      ),  // inner Container
+      ),  // GestureDetector
     );
   }
 
