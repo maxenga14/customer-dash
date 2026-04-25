@@ -56,11 +56,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       width: 34,
                       height: 34,
                       decoration: BoxDecoration(color: Colors.white.withOpacity(.16), borderRadius: BorderRadius.circular(11)),
-                      child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 16),
+                      child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 15),
                     ),
                   ),
                   const SizedBox(width: 12),
-                  const Text('Checkout', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15.5)),
+                  const Text('Checkout', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15.0)),
                 ],
               ),
             ),
@@ -78,14 +78,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       _pickupCard('Contact Person', 'Janeth Msuya', '+255 742 300 222', Icons.call_outlined),
                       const SizedBox(height: 12),
                     ],
-                    const Text('Order Items', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
+                    const Text('Order Items', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 11.4)),
                     const SizedBox(height: 10),
                     ...items.asMap().entries.map((entry) {
                       final index = entry.key;
                       final item = entry.value;
                       return Container(
                         margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(11),
                         decoration: cardDecoration(),
                         child: Row(
                           children: [
@@ -100,16 +100,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.6)),
+                                  Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.2)),
                                   const SizedBox(height: 3),
-                                  Text(item.subtitle, style: const TextStyle(fontSize: 9.8, color: AppColors.muted)),
+                                  Text(item.subtitle, style: const TextStyle(fontSize: 9.5, color: AppColors.muted)),
                                 ],
                               ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text('\$${item.price.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.6)),
+                                Text('\$${item.price.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.2)),
                                 const SizedBox(height: 8),
                                 Container(
                                   decoration: BoxDecoration(color: const Color(0xFFF4F7FB), borderRadius: BorderRadius.circular(12)),
@@ -117,7 +117,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       InkWell(onTap: () => changeQty(index, -1), child: const Padding(padding: EdgeInsets.all(7), child: Icon(Icons.remove, size: 15))),
-                                      Text('${item.quantity}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.5)),
+                                      Text('${item.quantity}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.0)),
                                       InkWell(onTap: () => changeQty(index, 1), child: const Padding(padding: EdgeInsets.all(7), child: Icon(Icons.add, size: 15, color: AppColors.green))),
                                     ],
                                   ),
@@ -134,7 +134,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     if (isDelivery) ...[
                       _line('Delivery', deliveryFee),
                       const SizedBox(height: 12),
-                      const Text('Delivery Address', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
+                      const Text('Delivery Address', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 11.4)),
                       const SizedBox(height: 10),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +149,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 fillColor: Colors.white,
                                 hintText: 'Enter delivery address',
                                 contentPadding: const EdgeInsets.all(14),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
                               ),
                             ),
                           ),
@@ -163,7 +163,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 foregroundColor: AppColors.green,
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                               ),
                               child: const Text('Use Current\nLocation', textAlign: TextAlign.center, style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w700)),
                             ),
@@ -199,7 +199,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         fillColor: Colors.white,
                         hintText: 'Enter phone number',
                         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
                       ),
                     ),
                     const SizedBox(height: 18),
@@ -245,13 +245,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: 11),
         decoration: BoxDecoration(
           color: active ? Colors.white : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
           boxShadow: active ? [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 10, offset: const Offset(0, 4))] : [],
         ),
-        child: Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: active ? AppColors.text : AppColors.muted)),
+        child: Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 11.6, fontWeight: FontWeight.w700, color: active ? AppColors.text : AppColors.muted)),
       ),
     );
   }
@@ -266,7 +266,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           Text(title, style: const TextStyle(fontSize: 10.0, color: AppColors.muted, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
-          Text(main, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.8)),
+          Text(main, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.4)),
           const SizedBox(height: 6),
           Row(children: [Icon(icon, size: 15, color: AppColors.muted), const SizedBox(width: 6), Expanded(child: Text(sub, style: const TextStyle(fontSize: 11, color: AppColors.muted)))]),
         ],
