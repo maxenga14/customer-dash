@@ -43,10 +43,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
               decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [AppColors.greenDark, AppColors.green]),
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(28), bottomRight: Radius.circular(28)),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(24), bottomRight: Radius.circular(24)),
               ),
               child: Row(
                 children: [
@@ -66,19 +66,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 10, 16, 24),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 22),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _toggle(),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 12),
                     if (!isDelivery) ...[
                       _pickupCard('Pharmacy', 'MediCare Central Pharmacy', 'Uhuru Street, Dodoma City Center', Icons.location_on_outlined),
                       const SizedBox(height: 10),
                       _pickupCard('Contact Person', 'Janeth Msuya', '+255 742 300 222', Icons.call_outlined),
                       const SizedBox(height: 12),
                     ],
-                    const Text('Order Items', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
+                    const Text('Order Items', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
                     const SizedBox(height: 10),
                     ...items.asMap().entries.map((entry) {
                       final index = entry.key;
@@ -90,8 +90,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         child: Row(
                           children: [
                             Container(
-                              width: 42,
-                              height: 42,
+                              width: 40,
+                              height: 40,
                               decoration: BoxDecoration(color: const Color(0xFFF4F7FB), borderRadius: BorderRadius.circular(12)),
                               child: const Icon(Icons.medication_outlined, color: Color(0xFF7188AD), size: 20),
                             ),
@@ -100,16 +100,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
+                                  Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.6)),
                                   const SizedBox(height: 3),
-                                  Text(item.subtitle, style: const TextStyle(fontSize: 10.2, color: AppColors.muted)),
+                                  Text(item.subtitle, style: const TextStyle(fontSize: 9.8, color: AppColors.muted)),
                                 ],
                               ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text('\$${item.price.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
+                                Text('\$${item.price.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.6)),
                                 const SizedBox(height: 8),
                                 Container(
                                   decoration: BoxDecoration(color: const Color(0xFFF4F7FB), borderRadius: BorderRadius.circular(12)),
@@ -133,8 +133,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     const SizedBox(height: 8),
                     if (isDelivery) ...[
                       _line('Delivery', deliveryFee),
-                      const SizedBox(height: 14),
-                      const Text('Delivery Address', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
+                      const SizedBox(height: 12),
+                      const Text('Delivery Address', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
                       const SizedBox(height: 10),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +155,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           const SizedBox(width: 10),
                           SizedBox(
-                            width: 112,
+                            width: 106,
                             child: ElevatedButton(
                               onPressed: () => setState(() => addressController.text = 'Current Location: Ntyuka, Dodoma'),
                               style: ElevatedButton.styleFrom(
@@ -165,7 +165,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                               ),
-                              child: const Text('Use Current\nLocation', textAlign: TextAlign.center, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700)),
+                              child: const Text('Use Current\nLocation', textAlign: TextAlign.center, style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w700)),
                             ),
                           )
                         ],
@@ -173,7 +173,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ],
                     const SizedBox(height: 16),
                     Container(
-                      padding: const EdgeInsets.all(14),
+                      padding: const EdgeInsets.all(12),
                       decoration: cardDecoration(),
                       child: Column(
                         children: [
@@ -188,7 +188,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text('Payment Phone Number', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
+                    const Text('Payment Phone Number', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
                     const SizedBox(height: 10),
                     TextField(
                       controller: phoneController,
@@ -211,10 +211,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           backgroundColor: AppColors.green,
                           foregroundColor: Colors.white,
                           elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                         ),
-                        child: const Text('Place Order & Buy', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
+                        child: const Text('Place Order & Buy', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
                       ),
                     )
                   ],
@@ -259,14 +259,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget _pickupCard(String title, String main, String sub, IconData icon) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 10.5, color: AppColors.muted, fontWeight: FontWeight.w700)),
+          Text(title, style: const TextStyle(fontSize: 10.0, color: AppColors.muted, fontWeight: FontWeight.w700)),
           const SizedBox(height: 8),
-          Text(main, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12.2)),
+          Text(main, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11.8)),
           const SizedBox(height: 6),
           Row(children: [Icon(icon, size: 15, color: AppColors.muted), const SizedBox(width: 6), Expanded(child: Text(sub, style: const TextStyle(fontSize: 11, color: AppColors.muted)))]),
         ],

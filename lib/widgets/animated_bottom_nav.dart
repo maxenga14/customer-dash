@@ -68,7 +68,7 @@ class _AnimatedBottomNavState extends State<AnimatedBottomNav>
     ];
 
     return SizedBox(
-      height: 110,
+      height: 104,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -77,10 +77,10 @@ class _AnimatedBottomNavState extends State<AnimatedBottomNav>
             right: 12,
             bottom: 10,
             child: Container(
-              height: 72,
+              height: 68,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(22),
                 boxShadow: [
                   BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 24, offset: const Offset(0, 8)),
                 ],
@@ -88,7 +88,7 @@ class _AnimatedBottomNavState extends State<AnimatedBottomNav>
               child: AnimatedBuilder(
                 animation: _navController,
                 builder: (context, _) {
-                  final gap = Tween<double>(begin: 0, end: 64).evaluate(CurvedAnimation(parent: _navController, curve: Curves.easeInOutCubic));
+                  final gap = Tween<double>(begin: 0, end: 58).evaluate(CurvedAnimation(parent: _navController, curve: Curves.easeInOutCubic));
                   return Row(
                     children: [
                       _navItem(0, items[0].$1, items[0].$2),
@@ -118,11 +118,11 @@ class _AnimatedBottomNavState extends State<AnimatedBottomNav>
                       child: GestureDetector(
                         onTap: widget.onCheckoutTap,
                         child: Container(
-                          height: 54,
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             color: AppColors.green,
-                            borderRadius: BorderRadius.circular(18),
+                            borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(color: AppColors.green.withOpacity(.33), blurRadius: 22, offset: const Offset(0, 8)),
                             ],
@@ -131,18 +131,18 @@ class _AnimatedBottomNavState extends State<AnimatedBottomNav>
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                width: 30,
-                                height: 30,
+                                width: 28,
+                                height: 28,
                                 decoration: BoxDecoration(color: Colors.white.withOpacity(.16), shape: BoxShape.circle),
                                 child: const Icon(Icons.shopping_cart_checkout_rounded, color: Colors.white, size: 18),
                               ),
                               const SizedBox(width: 10),
-                              const Text('Checkout', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700)),
+                              const Text('Checkout', style: TextStyle(color: Colors.white, fontSize: 12.2, fontWeight: FontWeight.w700)),
                               const SizedBox(width: 8),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
                                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                                child: Text('${widget.totalItems}', style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.w800, fontSize: 10)),
+                                child: Text('${widget.totalItems}', style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.w800, fontSize: 9.6)),
                               )
                             ],
                           ),
@@ -177,7 +177,7 @@ class _AnimatedBottomNavState extends State<AnimatedBottomNav>
             AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 220),
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 9.6,
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected ? AppColors.green : const Color(0xFFA8B1BE),
               ),

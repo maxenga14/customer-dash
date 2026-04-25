@@ -3,12 +3,12 @@ import '../theme/app_theme.dart';
 
 BoxDecoration cardDecoration() => BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(.04),
-          blurRadius: 14,
-          offset: const Offset(0, 5),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
         ),
       ],
     );

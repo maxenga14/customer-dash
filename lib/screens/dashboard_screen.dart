@@ -67,7 +67,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       children: [
                         _header(),
                         Transform.translate(
-                          offset: const Offset(0, -24),
+                          offset: const Offset(0, -20),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Column(
@@ -92,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 92),
+                const SizedBox(height: 88),
               ],
             ),
             Positioned(
@@ -116,10 +116,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _header() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 38),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 34),
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [AppColors.greenDark, AppColors.green], begin: Alignment.topLeft, end: Alignment.bottomRight),
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(26), bottomRight: Radius.circular(26)),
       ),
       child: Column(
         children: [
@@ -136,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Good Morning,', style: TextStyle(color: Color(0xFFD8FFF0), fontSize: 10.5)),
+                    Text('Good Morning,', style: TextStyle(color: Color(0xFFD8FFF0), fontSize: 10.0)),
                     SizedBox(height: 2),
                     Text('Alex Johnson', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15.5)),
                   ],
@@ -152,9 +152,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           const SizedBox(height: 14),
           Container(
-            height: 44,
+            height: 40,
             padding: const EdgeInsets.symmetric(horizontal: 14),
-            decoration: BoxDecoration(color: Colors.white.withOpacity(.17), borderRadius: BorderRadius.circular(15)),
+            decoration: BoxDecoration(color: Colors.white.withOpacity(.17), borderRadius: BorderRadius.circular(14)),
             child: const Row(
               children: [
                 Icon(Icons.search, color: Colors.white70, size: 18),
@@ -180,18 +180,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _smallAction(String title, IconData icon, Color bg) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 18),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: cardDecoration(),
       child: Column(
         children: [
           Container(
-            width: 36,
-            height: 36,
+            width: 34,
+            height: 34,
             decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(11)),
             child: Icon(icon, size: 18, color: AppColors.green),
           ),
           const SizedBox(height: 10),
-          Text(title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+          Text(title, style: const TextStyle(fontSize: 11.4, fontWeight: FontWeight.w600)),
         ],
       ),
     );
@@ -200,7 +200,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _routeCard() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,9 +217,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          const Text('Order #ORD-8832', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.5)),
+          const Text('Order #ORD-8832', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.0)),
           const SizedBox(height: 6),
-          const Text('Your order is preparing for delivery', style: TextStyle(fontSize: 10.5, color: AppColors.muted)),
+          const Text('Your order is preparing for delivery', style: TextStyle(fontSize: 10.0, color: AppColors.muted)),
           const SizedBox(height: 10),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -233,7 +233,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _quotationCard() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: cardDecoration(),
       child: const Row(
         children: [
@@ -243,9 +243,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Quotation Ready', style: TextStyle(fontSize: 12.2, fontWeight: FontWeight.w700)),
+                Text('Quotation Ready', style: TextStyle(fontSize: 11.8, fontWeight: FontWeight.w700)),
                 SizedBox(height: 3),
-                Text('Review prices for your prescription', style: TextStyle(fontSize: 10.5, color: AppColors.muted)),
+                Text('Review prices for your prescription', style: TextStyle(fontSize: 10.0, color: AppColors.muted)),
               ],
             ),
           ),
@@ -266,7 +266,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle('Categories', trailing: Text('See All', style: TextStyle(fontSize: 10.5, color: AppColors.green, fontWeight: FontWeight.w600))),
+        const SectionTitle('Categories', trailing: Text('See All', style: TextStyle(fontSize: 10.0, color: AppColors.green, fontWeight: FontWeight.w600))),
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -274,13 +274,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return Column(
               children: [
                 Container(
-                  width: 46,
-                  height: 46,
+                  width: 44,
+                  height: 44,
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14), boxShadow: [BoxShadow(color: Colors.black.withOpacity(.035), blurRadius: 10, offset: const Offset(0, 4))]),
                   child: Icon(cat.$1, color: const Color(0xFF6C7888), size: 18),
                 ),
                 const SizedBox(height: 7),
-                Text(cat.$2, style: const TextStyle(fontSize: 10, color: Color(0xFF6C7888))),
+                Text(cat.$2, style: const TextStyle(fontSize: 9.5, color: Color(0xFF6C7888))),
               ],
             );
           }).toList(),
@@ -313,27 +313,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const SizedBox(height: 10),
                     Center(
                       child: Container(
-                        width: 58,
-                        height: 58,
+                        width: 54,
+                        height: 54,
                         decoration: BoxDecoration(color: product.imageBg, borderRadius: BorderRadius.circular(14)),
                         child: const Icon(Icons.medication_liquid_outlined, color: Color(0xFF6F87AE)),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(product.name, maxLines: 2, style: const TextStyle(fontSize: 11.8, fontWeight: FontWeight.w700, height: 1.2)),
+                    Text(product.name, maxLines: 2, style: const TextStyle(fontSize: 11.2, fontWeight: FontWeight.w700, height: 1.2)),
                     const SizedBox(height: 4),
                     Text(product.subtitle, style: const TextStyle(fontSize: 10, color: AppColors.muted)),
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        Text('\$${product.price.toStringAsFixed(2)}', style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
+                        Text('\$${product.price.toStringAsFixed(2)}', style: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.w700)),
                         const Spacer(),
                         GestureDetector(
                           onTap: () => addToCart(product),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
-                            width: 28,
-                            height: 28,
+                            width: 26,
+                            height: 26,
                             decoration: BoxDecoration(color: AppColors.green, borderRadius: BorderRadius.circular(10)),
                             child: const Icon(Icons.add, color: Colors.white, size: 16),
                           ),
@@ -358,7 +358,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const SizedBox(height: 12),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(12),
           decoration: cardDecoration(),
           child: Row(
             children: [
@@ -373,11 +373,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Salbutamol Inhaler', style: TextStyle(fontSize: 12.2, fontWeight: FontWeight.w700)),
+                    Text('Salbutamol Inhaler', style: TextStyle(fontSize: 11.8, fontWeight: FontWeight.w700)),
                     SizedBox(height: 3),
                     Text('100mcg - 200 doses', style: TextStyle(fontSize: 10.2, color: AppColors.muted)),
                     SizedBox(height: 5),
-                    Text('\$15.00', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700)),
+                    Text('\$15.00', style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w700)),
                   ],
                 ),
               ),
