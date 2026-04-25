@@ -91,89 +91,97 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void _navTo(int i) {
-    setState(() => selectedIndex = i);
-    final routes = {
-      1: () => const OrdersScreen(),
-      2: () => const PrescriptionsScreen(),
-      3: () => const SettingsScreen(),
-    };
-    if (routes.containsKey(i)) {
-      Navigator.push(
-        context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 300),
-          pageBuilder: (_, anim, __) =>
-              FadeTransition(opacity: anim, child: routes[i]!()),
-        ),
-      );
-    }
-  }
+  // ── Tab switching — NO Navigator.push, IndexedStack handles it ──────────
+  void _navTo(int i) => setState(() => selectedIndex = i);
 
   @override
   Widget build(BuildContext context) {
+    // Shell pattern: IndexedStack keeps all tabs alive & bottom nav
+    // is a persistent overlay — never disappears on tab switch.
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: _header()),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                      const SizedBox(height: 12),
-                      _pharmacyBanner(),
-                      const SizedBox(height: 12),
-                      _quickActions(),
-                      // ── Contextual: only shown when relevant ──
-                      if (!_AppState.isNewUser && _AppState.hasActiveOrder) ...[
-                        const SizedBox(height: 12),
-                        _activeOrderCard(),
-                      ],
-                      if (!_AppState.isNewUser &&
-                          _AppState.hasPendingQuote) ...[
-                        const SizedBox(height: 10),
-                        _quotationCard(),
-                      ],
-                      const SizedBox(height: 20),
-                      // ── New user: onboarding nudge instead of nothing
-                      if (_AppState.isNewUser) ...[
-                        _newUserNudge(),
-                        const SizedBox(height: 20),
-                      ],
-                      // ── Buy Again (returning users only) ──
-                      if (!_AppState.isNewUser) ...[
-                        _buyAgainSection(),
-                        const SizedBox(height: 20),
-                      ],
-                      // ── Category filters + product grid ──
-                      _categoryFilters(),
-                      const SizedBox(height: 14),
-                      _productGrid(),
-                    ]),
-                  ),
-                ),
-              ],
-            ),
-            // ── Bottom nav overlay ──
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: AnimatedBottomNav(
-                selectedIndex: selectedIndex,
-                hasCart: cart.isNotEmpty,
-                totalItems: totalCartItems,
-                onTap: _navTo,
-                onCheckoutTap: _openCheckout,
+      body: Stack(
+        children: [
+          // ── 4-tab IndexedStack ─────────────────────────────────────
+          IndexedStack(
+            index: selectedIndex,
+            children: [
+              // Tab 0 — Home (has its own SafeArea + header gradient)
+              SafeArea(
+                bottom: false,
+                child: _buildHomeTab(),
               ),
+              // Tabs 1-3: sub-screens get extra bottom inset so their
+              // scroll content never hides behind the nav overlay.
+              _tabShell(const OrdersScreen()),
+              _tabShell(const PrescriptionsScreen()),
+              _tabShell(const SettingsScreen()),
+            ],
+          ),
+          // ── Persistent bottom nav overlay ──────────────────────────
+          Positioned(
+            left: 0, right: 0, bottom: 0,
+            child: AnimatedBottomNav(
+              selectedIndex: selectedIndex,
+              hasCart: cart.isNotEmpty,
+              totalItems: totalCartItems,
+              onTap: _navTo,
+              onCheckoutTap: _openCheckout,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+  }
+
+  /// Wraps a tab screen so its scrollable content sits above the nav overlay.
+  /// Uses MediaQuery padding override — no Scaffold modification needed.
+  Widget _tabShell(Widget child) {
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        padding: MediaQuery.of(context).padding.copyWith(bottom: 110),
+      ),
+      child: child,
+    );
+  }
+
+  /// Home tab body — extracted from build() for clarity.
+  Widget _buildHomeTab() {
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: _header()),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              const SizedBox(height: 12),
+              _pharmacyBanner(),
+              const SizedBox(height: 12),
+              _quickActions(),
+              if (!_AppState.isNewUser && _AppState.hasActiveOrder) ...[
+                const SizedBox(height: 12),
+                _activeOrderCard(),
+              ],
+              if (!_AppState.isNewUser && _AppState.hasPendingQuote) ...[
+                const SizedBox(height: 10),
+                _quotationCard(),
+              ],
+              const SizedBox(height: 20),
+              if (_AppState.isNewUser) ...[
+                _newUserNudge(),
+                const SizedBox(height: 20),
+              ],
+              if (!_AppState.isNewUser) ...[
+                _buyAgainSection(),
+                const SizedBox(height: 20),
+              ],
+              _categoryFilters(),
+              const SizedBox(height: 14),
+              _productGrid(),
+            ]),
+          ),
+        ),
+      ],
     );
   }
 
