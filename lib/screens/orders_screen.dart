@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../data/orders_data.dart';
+import '../data/prescriptions_data.dart';
 import '../models/cart_item.dart';
 import '../models/order.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'checkout_screen.dart';
 import 'order_details_screen.dart';
+import 'rx_details_screen.dart';
 import '../widgets/product_mock_art.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -309,7 +311,33 @@ class _OrderCard extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Find the first quotationReady prescription and
+                  // deep-link directly to its RxDetailsScreen
+                  final rx = mockPrescriptions.firstWhere(
+                    (p) => p.status.name == 'quotationReady',
+                    orElse: () => mockPrescriptions.first,
+                  );
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration:
+                          const Duration(milliseconds: 320),
+                      reverseTransitionDuration:
+                          const Duration(milliseconds: 260),
+                      pageBuilder: (_, animation, __) =>
+                          SlideTransition(
+                        position: Tween(
+                                begin: const Offset(1, 0),
+                                end: Offset.zero)
+                            .animate(CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeOutCubic)),
+                        child: RxDetailsScreen(rx: rx),
+                      ),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF5B8FC9),
                   foregroundColor: Colors.white,
