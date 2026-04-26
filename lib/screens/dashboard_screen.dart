@@ -50,6 +50,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final List<CartItem> cart = [];
   String _selectedCategory = 'All';
 
+  // ── Per-tab Navigator keys (tabs 1-3 only; home tab uses root nav) ──────
+  // Index 0 = Orders tab, 1 = Rx tab, 2 = Settings tab
+  final List<GlobalKey<NavigatorState>> _tabNavKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+  ];
+
   int get totalCartItems => cart.fold(0, (sum, item) => sum + item.quantity);
 
   void _addToCart(ProductData product) {
@@ -95,7 +103,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     // Shell pattern: IndexedStack keeps all tabs alive & bottom nav
     // is a persistent overlay — never disappears on tab switch.
-    return Scaffold(
+    return WillPopScope(
+      // Android back: pop within the active tab's navigator first.
+      // If at the tab root → switch back to Home tab.
+      // If already on Home → let the OS handle (minimize/close).
+      onWillPop: () async {
+        if (selectedIndex > 0) {
+          final navKey = _tabNavKeys[selectedIndex - 1];
+          if (navKey.currentState?.canPop() == true) {
+            navKey.currentState!.pop();
+            return false; // handled — don't close app
+          }
+          // At tab root — go home
+          setState(() => selectedIndex = 0);
+          return false;
+        }
+        return true; // on home tab → let OS handle
+      },
+      child: Scaffold(
       backgroundColor: AppColors.bg,
       body: Stack(
         children: [
@@ -110,9 +135,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               // Tabs 1-3: sub-screens get extra bottom inset so their
               // scroll content never hides behind the nav overlay.
-              _tabShell(const OrdersScreen()),
-              _tabShell(const PrescriptionsScreen()),
-              _tabShell(const SettingsScreen()),
+              _tabShell(0, const OrdersScreen()),
+              _tabShell(1, const PrescriptionsScreen()),
+              _tabShell(2, const SettingsScreen()),
             ],
           ),
           // ── Persistent bottom nav overlay ──────────────────────────
@@ -128,19 +153,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-    );
+    ),   // end Scaffold
+    );   // end WillPopScope
   }
 
-  /// Hard-constrains the sub-screen so its Scaffold can't paint into the
-  /// nav bar zone.  Flutter's Scaffold removes MediaQuery.padding.bottom
-  /// before passing it to body:, so a MediaQuery override never reaches
-  /// SafeArea.  Using Padding here physically shortens the widget instead.
-  Widget _tabShell(Widget child) {
-    // 72 nav height + 10 margin + system home-bar inset
+  /// Wraps each non-home tab in:
+  ///   1. A nested Navigator (pushes stay within the tab → bottom nav
+  ///      is NEVER covered by OrderDetailsScreen, UploadRxScreen, etc.)
+  ///   2. A Padding constraint (physically shortens the subtree so the
+  ///      Scaffold can't paint over the nav bar zone)
+  ///
+  /// [tabNavIndex]: 0=Orders, 1=Rx, 2=Settings
+  Widget _tabShell(int tabNavIndex, Widget home) {
     final bottomInset = 82.0 + MediaQuery.of(context).padding.bottom;
     return Padding(
       padding: EdgeInsets.only(bottom: bottomInset),
-      child: child,
+      child: Navigator(
+        key: _tabNavKeys[tabNavIndex],
+        // Default route = the tab's home screen
+        onGenerateRoute: (_) =>
+            MaterialPageRoute(builder: (_) => home),
+      ),
     );
   }
 
