@@ -50,12 +50,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final List<CartItem> cart = [];
   String _selectedCategory = 'All';
 
-  // ── Per-tab Navigator keys (tabs 1-3 only; home tab uses root nav) ──────
-  // Index 0 = Orders tab, 1 = Rx tab, 2 = Settings tab
+  // ── One nested Navigator key per tab (including Home) ─────────────────
+  // Index: 0=Home, 1=Orders, 2=Rx, 3=Settings
   final List<GlobalKey<NavigatorState>> _tabNavKeys = [
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(), // 0 Home
+    GlobalKey<NavigatorState>(), // 1 Orders
+    GlobalKey<NavigatorState>(), // 2 Rx
+    GlobalKey<NavigatorState>(), // 3 Settings
   ];
 
   int get totalCartItems => cart.fold(0, (sum, item) => sum + item.quantity);
@@ -78,8 +79,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _openCheckout() async {
     if (cart.isEmpty) return;
-    await Navigator.push(
-      context,
+    // Push checkout within the CURRENT tab's navigator so the
+    // bottom nav bar stays visible throughout the checkout flow.
+    _tabNavKeys[selectedIndex].currentState?.push(
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 320),
         reverseTransitionDuration: const Duration(milliseconds: 260),
@@ -88,7 +90,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
           child: CheckoutScreen(
             initialItems: cart.map((e) => e.copy()).toList(),
-            // Cart is cleared HERE when the user dismisses the confirmation screen
             onOrderPlaced: () => setState(() => cart.clear()),
           ),
         ),
@@ -108,17 +109,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // If at the tab root → switch back to Home tab.
       // If already on Home → let the OS handle (minimize/close).
       onWillPop: () async {
-        if (selectedIndex > 0) {
-          final navKey = _tabNavKeys[selectedIndex - 1];
-          if (navKey.currentState?.canPop() == true) {
-            navKey.currentState!.pop();
-            return false; // handled — don't close app
-          }
-          // At tab root — go home
+        // Try to pop within the active tab's nested navigator first
+        final navKey = _tabNavKeys[selectedIndex];
+        if (navKey.currentState?.canPop() == true) {
+          navKey.currentState!.pop();
+          return false; // handled — stay in app
+        }
+        if (selectedIndex != 0) {
+          // At a tab's root — return to Home tab
           setState(() => selectedIndex = 0);
           return false;
         }
-        return true; // on home tab → let OS handle
+        return true; // on Home root → let OS handle (minimize / close)
       },
       child: Scaffold(
       backgroundColor: AppColors.bg,
@@ -128,16 +130,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           IndexedStack(
             index: selectedIndex,
             children: [
-              // Tab 0 — Home (has its own SafeArea + header gradient)
-              SafeArea(
-                bottom: false,
-                child: _buildHomeTab(),
-              ),
-              // Tabs 1-3: sub-screens get extra bottom inset so their
-              // scroll content never hides behind the nav overlay.
-              _tabShell(0, const OrdersScreen()),
-              _tabShell(1, const PrescriptionsScreen()),
-              _tabShell(2, const SettingsScreen()),
+              // All 4 tabs use a nested Navigator + Padding so that ANY
+              // Navigator.push from within the tab stays inside the tab's
+              // Navigator — the bottom nav overlay is NEVER covered.
+              _tabShell(0, SafeArea(bottom: false, child: _buildHomeTab())),
+              _tabShell(1, const OrdersScreen()),
+              _tabShell(2, const PrescriptionsScreen()),
+              _tabShell(3, const SettingsScreen()),
             ],
           ),
           // ── Persistent bottom nav overlay ──────────────────────────
@@ -163,7 +162,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ///   2. A Padding constraint (physically shortens the subtree so the
   ///      Scaffold can't paint over the nav bar zone)
   ///
-  /// [tabNavIndex]: 0=Orders, 1=Rx, 2=Settings
+  /// [tabNavIndex]: 0=Home, 1=Orders, 2=Rx, 3=Settings
   Widget _tabShell(int tabNavIndex, Widget home) {
     final bottomInset = 82.0 + MediaQuery.of(context).padding.bottom;
     return Padding(
