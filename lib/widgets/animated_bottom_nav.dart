@@ -22,168 +22,186 @@ class AnimatedBottomNav extends StatefulWidget {
 }
 
 class _AnimatedBottomNavState extends State<AnimatedBottomNav>
-    with TickerProviderStateMixin {
-  late final AnimationController _fabController;
-  late final AnimationController _navController;
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _cartController;
 
   @override
   void initState() {
     super.initState();
-    _fabController = AnimationController(vsync: this, duration: const Duration(milliseconds: 420));
-    _navController = AnimationController(vsync: this, duration: const Duration(milliseconds: 360));
-    if (widget.hasCart) {
-      _fabController.value = 1;
-      _navController.value = 1;
-    }
+    _cartController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 320));
+    if (widget.hasCart) _cartController.value = 1;
   }
 
   @override
   void didUpdateWidget(covariant AnimatedBottomNav oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.hasCart != oldWidget.hasCart) {
-      if (widget.hasCart) {
-        _fabController.forward();
-        _navController.forward();
-      } else {
-        _fabController.reverse();
-        _navController.reverse();
-      }
+      widget.hasCart ? _cartController.forward() : _cartController.reverse();
     }
   }
 
   @override
   void dispose() {
-    _fabController.dispose();
-    _navController.dispose();
+    _cartController.dispose();
     super.dispose();
   }
 
+  // Nav items — cart sits in the CENTER (index 2), pushing Rx to 3, Settings to 4
+  static const _items = [
+    (Icons.home_filled,           Icons.home_outlined,            'Home',     false),
+    (Icons.inventory_2_rounded,   Icons.inventory_2_outlined,     'Orders',   false),
+    (Icons.shopping_cart_rounded, Icons.shopping_cart_outlined,   'Cart',     true ), // centre
+    (Icons.receipt_long_rounded,  Icons.receipt_long_outlined,    'Rx',       false),
+    (Icons.settings_rounded,      Icons.settings_outlined,        'Settings', false),
+  ];
+
+  // Map visual index (0-4) → tab index passed to onTap (cart taps open checkout)
+  // Home=0, Orders=1, [cart opens checkout], Rx=2, Settings=3
+  static const _tabMap = [0, 1, -1, 2, 3]; // -1 = cart action
+
   @override
   Widget build(BuildContext context) {
-    const items = [
-      (Icons.home_filled, 'Home'),
-      (Icons.inventory_2_outlined, 'Orders'),
-      (Icons.receipt_long_outlined, 'Rx'),
-      (Icons.settings_outlined, 'Settings'),
-    ];
+    return Container(
+      height: 72,
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.08),
+              blurRadius: 24,
+              offset: const Offset(0, 8)),
+        ],
+      ),
+      child: Row(
+        children: List.generate(_items.length, (i) {
+          final item       = _items[i];
+          final isCart     = item.$4;
+          final tabIndex   = _tabMap[i];
+          final isSelected = !isCart && widget.selectedIndex == tabIndex;
 
-    return SizedBox(
-      height: 104,
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Positioned(
-            left: 12,
-            right: 12,
-            bottom: 10,
-            child: Container(
-              height: 68,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(22),
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 24, offset: const Offset(0, 8)),
-                ],
-              ),
-              child: AnimatedBuilder(
-                animation: _navController,
-                builder: (context, _) {
-                  final gap = Tween<double>(begin: 0, end: 58).evaluate(CurvedAnimation(parent: _navController, curve: Curves.easeInOutCubic));
-                  return Row(
-                    children: [
-                      _navItem(0, items[0].$1, items[0].$2),
-                      _navItem(1, items[1].$1, items[1].$2),
-                      SizedBox(width: gap),
-                      _navItem(2, items[2].$1, items[2].$2),
-                      _navItem(3, items[3].$1, items[3].$2),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ),
-          AnimatedBuilder(
-            animation: _fabController,
-            builder: (context, _) {
-              final curved = CurvedAnimation(parent: _fabController, curve: Curves.easeOutBack, reverseCurve: Curves.easeInCubic);
-              final dy = Tween<double>(begin: 40, end: 0).evaluate(curved);
-              return IgnorePointer(
-                ignoring: _fabController.value == 0,
-                child: Opacity(
-                  opacity: _fabController.value,
-                  child: Transform.translate(
-                    offset: Offset(0, dy),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 24),
-                      child: GestureDetector(
-                        onTap: widget.onCheckoutTap,
-                        child: Container(
-                          height: 48,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: AppColors.green,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(color: AppColors.green.withOpacity(.33), blurRadius: 22, offset: const Offset(0, 8)),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 26,
-                                height: 26,
-                                decoration: BoxDecoration(color: Colors.white.withOpacity(.16), shape: BoxShape.circle),
-                                child: const Icon(Icons.shopping_cart_checkout_rounded, color: Colors.white, size: 18),
-                              ),
-                              const SizedBox(width: 10),
-                              const Text('Checkout', style: TextStyle(color: Colors.white, fontSize: 11.8, fontWeight: FontWeight.w700)),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                                child: Text('${widget.totalItems}', style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.w800, fontSize: 9.2)),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+          if (isCart) return _cartSlot();
+
+          return Expanded(
+            child: InkWell(
+              onTap: () => widget.onTap(tabIndex),
+              borderRadius: BorderRadius.circular(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 220),
+                    child: Icon(
+                      isSelected ? item.$1 : item.$2,
+                      key: ValueKey(isSelected),
+                      size: 21,
+                      color: isSelected
+                          ? AppColors.green
+                          : const Color(0xFFA8B1BE),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                  const SizedBox(height: 4),
+                  AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 180),
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: isSelected
+                          ? FontWeight.w700
+                          : FontWeight.w500,
+                      color: isSelected
+                          ? AppColors.green
+                          : const Color(0xFFA8B1BE),
+                    ),
+                    child: Text(item.$3),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
 
-  Widget _navItem(int index, IconData icon, String label) {
-    final selected = widget.selectedIndex == index;
+  /// Centre cart slot — plain icon when empty, green badge button when filled.
+  /// Stays INSIDE the nav bar — never floats over content.
+  Widget _cartSlot() {
     return Expanded(
-      child: InkWell(
-        onTap: () => widget.onTap(index),
-        borderRadius: BorderRadius.circular(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedScale(
-              scale: selected ? 1.07 : 1,
-              duration: const Duration(milliseconds: 220),
-              child: Icon(icon, size: 20, color: selected ? AppColors.green : const Color(0xFFA8B1BE)),
-            ),
-            const SizedBox(height: 4),
-            AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 220),
-              style: TextStyle(
-                fontSize: 9.2,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                color: selected ? AppColors.green : const Color(0xFFA8B1BE),
+      child: GestureDetector(
+        onTap: widget.hasCart ? widget.onCheckoutTap : null,
+        child: AnimatedBuilder(
+          animation: _cartController,
+          builder: (_, __) {
+            final scale = Tween<double>(begin: 1.0, end: 1.18)
+                .animate(CurvedAnimation(
+                    parent: _cartController, curve: Curves.easeOutBack))
+                .value;
+            return Center(
+              child: Transform.scale(
+                scale: scale,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 280),
+                  curve: Curves.easeOutCubic,
+                  width:  widget.hasCart ? 50 : 40,
+                  height: widget.hasCart ? 50 : 40,
+                  decoration: BoxDecoration(
+                    color: widget.hasCart
+                        ? AppColors.green
+                        : const Color(0xFFF0FAF5),
+                    shape: BoxShape.circle,
+                    boxShadow: widget.hasCart
+                        ? [
+                            BoxShadow(
+                                color: AppColors.green.withOpacity(.32),
+                                blurRadius: 14,
+                                offset: const Offset(0, 4))
+                          ]
+                        : [],
+                  ),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Center(
+                        child: Icon(
+                          Icons.shopping_cart_rounded,
+                          size: widget.hasCart ? 22 : 20,
+                          color: widget.hasCart
+                              ? Colors.white
+                              : const Color(0xFFA8B1BE),
+                        ),
+                      ),
+                      if (widget.hasCart)
+                        Positioned(
+                          top: -2,
+                          right: -2,
+                          child: Container(
+                            width: 18,
+                            height: 18,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFD166),
+                              shape: BoxShape.circle,
+                              border:
+                                  Border.all(color: Colors.white, width: 1.5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${widget.totalItems > 9 ? "9+" : widget.totalItems}',
+                                style: const TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xFF2D1A00)),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
-              child: Text(label),
-            )
-          ],
+            );
+          },
         ),
       ),
     );

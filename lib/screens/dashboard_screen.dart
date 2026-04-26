@@ -69,7 +69,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _openCheckout() async {
-    final result = await Navigator.push(
+    if (cart.isEmpty) return;
+    await Navigator.push(
       context,
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 320),
@@ -77,18 +78,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         pageBuilder: (_, animation, __) => SlideTransition(
           position: Tween(begin: const Offset(1, 0), end: Offset.zero).animate(
               CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
-          child:
-              CheckoutScreen(initialItems: cart.map((e) => e.copy()).toList()),
+          child: CheckoutScreen(
+            initialItems: cart.map((e) => e.copy()).toList(),
+            // Cart is cleared HERE when the user dismisses the confirmation screen
+            onOrderPlaced: () => setState(() => cart.clear()),
+          ),
         ),
       ),
     );
-    if (result is List<CartItem>) {
-      setState(() {
-        cart
-          ..clear()
-          ..addAll(result);
-      });
-    }
   }
 
   // ── Tab switching — NO Navigator.push, IndexedStack handles it ──────────
@@ -154,8 +151,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-              const SizedBox(height: 12),
-              _pharmacyBanner(),
               const SizedBox(height: 12),
               _quickActions(),
               if (!_AppState.isNewUser && _AppState.hasActiveOrder) ...[

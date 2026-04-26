@@ -11,6 +11,7 @@ class OrderConfirmationScreen extends StatefulWidget {
     required this.deliveryAddress,
     required this.paymentPhone,
     required this.isDelivery,
+    this.onOrderPlaced,
   });
 
   final String orderNumber;
@@ -19,6 +20,7 @@ class OrderConfirmationScreen extends StatefulWidget {
   final String deliveryAddress;
   final String paymentPhone;
   final bool isDelivery;
+  final VoidCallback? onOrderPlaced; // clears the dashboard cart
 
   @override
   State<OrderConfirmationScreen> createState() =>
@@ -133,8 +135,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () =>
-                            Navigator.of(context).popUntil((r) => r.isFirst),
+                        onPressed: () {
+                              widget.onOrderPlaced?.call();
+                              Navigator.of(context).popUntil((r) => r.isFirst);
+                            },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.green,
                           foregroundColor: Colors.white,
@@ -150,8 +154,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                     ),
                     const SizedBox(height: 14),
                     TextButton(
-                      onPressed: () =>
-                          Navigator.of(context).popUntil((r) => r.isFirst),
+                      onPressed: () {
+                            widget.onOrderPlaced?.call();
+                            Navigator.of(context).popUntil((r) => r.isFirst);
+                          },
                       child: const Text('Continue Shopping',
                           style: TextStyle(
                               fontSize: 12.5,

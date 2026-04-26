@@ -5,8 +5,13 @@ import '../widgets/common.dart';
 import 'order_confirmation_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key, required this.initialItems});
+  const CheckoutScreen({
+    super.key,
+    required this.initialItems,
+    this.onOrderPlaced,  // called after order confirmed → clears dashboard cart
+  });
   final List<CartItem> initialItems;
+  final VoidCallback? onOrderPlaced;
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -221,6 +226,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 deliveryAddress: addressController.text,
                                 paymentPhone: phoneController.text.isEmpty ? 'M-Pesa (STK Push)' : phoneController.text,
                                 isDelivery: isDelivery,
+                                onOrderPlaced: widget.onOrderPlaced,
                               ),
                             ),
                           ),
