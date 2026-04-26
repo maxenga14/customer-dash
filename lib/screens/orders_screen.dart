@@ -73,7 +73,7 @@ class _OrdersScreenState extends State<OrdersScreen>
               child: _filtered.isEmpty
                   ? _emptyState()
                   : ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 6, 16, 24),
+                      padding: const EdgeInsets.fromLTRB(16, 6, 16, 20),
                       itemCount: _filtered.length,
                       itemBuilder: (context, index) =>
                           _OrderCard(order: _filtered[index]),

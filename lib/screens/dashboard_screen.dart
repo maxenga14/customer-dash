@@ -131,13 +131,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  /// Wraps a tab screen so its scrollable content sits above the nav overlay.
-  /// Uses MediaQuery padding override — no Scaffold modification needed.
+  /// Hard-constrains the sub-screen so its Scaffold can't paint into the
+  /// nav bar zone.  Flutter's Scaffold removes MediaQuery.padding.bottom
+  /// before passing it to body:, so a MediaQuery override never reaches
+  /// SafeArea.  Using Padding here physically shortens the widget instead.
   Widget _tabShell(Widget child) {
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        padding: MediaQuery.of(context).padding.copyWith(bottom: 110),
-      ),
+    // 72 nav height + 10 margin + system home-bar inset
+    final bottomInset = 82.0 + MediaQuery.of(context).padding.bottom;
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomInset),
       child: child,
     );
   }

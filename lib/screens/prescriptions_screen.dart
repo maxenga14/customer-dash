@@ -29,7 +29,7 @@ class PrescriptionsScreen extends StatelessWidget {
             _header(context),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
                 children: [
                   _statsRow(),
                   const SizedBox(height: 14),
