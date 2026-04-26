@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../data/orders_data.dart';
+import '../models/cart_item.dart';
 import '../models/order.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'checkout_screen.dart';
 import 'order_details_screen.dart';
 import '../widgets/product_mock_art.dart';
 
@@ -420,19 +422,41 @@ class _OrderCard extends StatelessWidget {
       return Row(
         children: [
           Expanded(
-            child: OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Color(0xFFDDE3ED)),
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+            child: Builder(
+              builder: (ctx) => OutlinedButton(
+                onPressed: () {
+                  // Build CartItems from this order's line items and send
+                  // the customer straight to checkout pre-filled
+                  final cartItems = OrderDetailsScreen.itemsForOrder(order);
+                  Navigator.push(
+                    ctx,
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 320),
+                      reverseTransitionDuration:
+                          const Duration(milliseconds: 260),
+                      pageBuilder: (_, animation, __) => SlideTransition(
+                        position: Tween(
+                                begin: const Offset(1, 0), end: Offset.zero)
+                            .animate(CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeOutCubic)),
+                        child: CheckoutScreen(initialItems: cartItems),
+                      ),
+                    ),
+                  );
+                },
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Color(0xFFDDE3ED)),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('Reorder',
+                    style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.text)),
               ),
-              child: const Text('Reorder',
-                  style: TextStyle(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.text)),
             ),
           ),
           const SizedBox(width: 10),

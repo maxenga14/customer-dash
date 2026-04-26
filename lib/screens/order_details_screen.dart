@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../models/cart_item.dart';
 import '../models/order.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'checkout_screen.dart';
 
 /// Represents one item in an order for the details view
 class OrderLineItem {
@@ -37,6 +39,43 @@ class OrderDetailsScreen extends StatelessWidget {
     const OrderLineItem(name: 'Paracetamol 500mg', subtitle: 'Pack of 16', price: 5.50, qty: 1, imageBg: Color(0xFFEAF3FF)),
     const OrderLineItem(name: 'Benylin Dry Cough', subtitle: '150ml bottle', price: 12.00, qty: 1, imageBg: Color(0xFFFFF1F1)),
   ];
+
+  /// Static version so other screens (e.g. OrdersScreen) can reorder without
+  /// needing an instance. In production, pass real items from the order object.
+  static List<CartItem> itemsForOrder(Order order) => _items
+      .map((item) => CartItem(
+            name: item.name,
+            subtitle: item.subtitle,
+            price: item.price,
+            quantity: item.qty,
+          ))
+      .toList();
+
+  /// Converts this order's line items into CartItems ready for CheckoutScreen.
+  List<CartItem> get _asCartItems => _items
+      .map((item) => CartItem(
+            name: item.name,
+            subtitle: item.subtitle,
+            price: item.price,
+            quantity: item.qty,
+          ))
+      .toList();
+
+  void _reorder(BuildContext context) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 320),
+        reverseTransitionDuration: const Duration(milliseconds: 260),
+        pageBuilder: (_, animation, __) => SlideTransition(
+          position: Tween(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(CurvedAnimation(
+                  parent: animation, curve: Curves.easeOutCubic)),
+          child: CheckoutScreen(initialItems: _asCartItems),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -567,7 +606,7 @@ class OrderDetailsScreen extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: ElevatedButton.icon(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => _reorder(context),
               icon: const Icon(Icons.replay_rounded, size: 15),
               label: const Text('Reorder',
                   style:
