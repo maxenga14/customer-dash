@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/mock_data.dart';
+import '../models/user_profile.dart';
 import '../data/orders_data.dart';
 import '../models/cart_item.dart';
 import '../theme/app_theme.dart';
@@ -232,34 +233,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(.18),
-                    shape: BoxShape.circle),
-                child: const Icon(Icons.person_rounded,
-                    color: Colors.white, size: 18),
-              ),
-              const SizedBox(width: 10),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Good morning,',
-                        style: TextStyle(
-                            color: Color(0xFFD8FFF0), fontSize: 10.0)),
-                    SizedBox(height: 2),
-                    Text('Alex Johnson',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 15.5)),
-                  ],
-                ),
-              ),
+          ValueListenableBuilder<UserProfileData>(
+            valueListenable: UserProfile.instance,
+            builder: (_, profile, __) => Row(children: [
+              Container(width:36,height:36,
+                decoration:BoxDecoration(color:Colors.white.withOpacity(.18),shape:BoxShape.circle),
+                child:profile.avatarBytes!=null
+                    ?ClipOval(child:Image.memory(profile.avatarBytes!,fit:BoxFit.cover,width:36,height:36))
+                    :const Icon(Icons.person_rounded,color:Colors.white,size:18)),
+              const SizedBox(width:10),
+              Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
+                const Text('Habari yako,',style:TextStyle(color:Color(0xFFD8FFF0),fontSize:10.0)),
+                const SizedBox(height:2),
+                Text(profile.firstName,style:const TextStyle(color:Colors.white,fontWeight:FontWeight.w700,fontSize:15.5)),
+              ])),
               Stack(
                 children: [
                   Container(

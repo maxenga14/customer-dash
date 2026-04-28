@@ -1,4 +1,6 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import '../models/user_profile.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'change_password_screen.dart';
@@ -205,7 +207,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 16),
 
                     Center(
-                        child: Text('PharmaFlow v2.4.1 · Made in Kenya 🇰🇪',
+                        child: Text('Afya Hub v2.4.1 · Made in Tanzania 🇹🇿',
                             style: TextStyle(
                                 fontSize: 10, color: AppColors.muted))),
                     const SizedBox(height: 24),
@@ -217,73 +219,61 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // ── Profile header with gradient + stats ───────────────────────────
-  Widget _profileHeader() => Container(
+  Widget _profileHeader() => ValueListenableBuilder<UserProfileData>(
+    valueListenable: UserProfile.instance,
+    builder: (context, profile, _) => GestureDetector(
+      onTap: () => _push(const PersonalInfoScreen()),
+      child: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
               colors: [AppColors.greenDark, AppColors.green],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight),
+              begin: Alignment.topLeft, end: Alignment.bottomRight),
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(28),
-              bottomRight: Radius.circular(28)),
+              bottomLeft: Radius.circular(28), bottomRight: Radius.circular(28)),
         ),
         child: Column(children: [
           const SizedBox(height: 20),
-          // Avatar
           Stack(alignment: Alignment.bottomRight, children: [
-            Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                    color: const Color(0xFFE2EAF5),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 3)),
-                child: const Icon(Icons.person_rounded,
-                    size: 42, color: Color(0xFF6E86AE))),
-            Container(
-                width: 26,
-                height: 26,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.green, width: 2)),
-                child: const Icon(Icons.camera_alt_rounded,
-                    size: 13, color: AppColors.green)),
+            Container(width: 80, height: 80,
+              decoration: BoxDecoration(color: const Color(0xFFE2EAF5), shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 3)),
+              child: profile.avatarBytes != null
+                  ? ClipOval(child: Image.memory(profile.avatarBytes!, fit: BoxFit.cover, width: 80, height: 80))
+                  : const Icon(Icons.person_rounded, size: 42, color: Color(0xFF6E86AE))),
+            Container(width: 26, height: 26,
+              decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.green, width: 2)),
+              child: const Icon(Icons.camera_alt_rounded, size: 13, color: AppColors.green)),
           ]),
           const SizedBox(height: 10),
-          const Text('John Doe',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w800)),
+          Text(profile.name,
+              style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w800)),
           const SizedBox(height: 3),
-          const Text('+254 712 345 678',
-              style: TextStyle(color: Color(0xFFD0F5E8), fontSize: 11.5)),
-          const SizedBox(height: 16),
-          // Stats row
+          Text(profile.phone, style: const TextStyle(color: Color(0xFFD0F5E8), fontSize: 11.5)),
+          const SizedBox(height: 4),
+          const Text('Tap to edit profile',
+              style: TextStyle(color: Color(0xFFADE8CE), fontSize: 10, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 14),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 14),
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(.12),
-                  borderRadius: BorderRadius.circular(18)),
+              decoration: BoxDecoration(color: Colors.white.withOpacity(.12), borderRadius: BorderRadius.circular(18)),
               child: Row(children: [
-                _stat('12', 'Orders'),
-                _statDivider(),
-                _stat('4', 'Addresses'),
-                _statDivider(),
-                _stat('3', 'Rx Uploads'),
-                _statDivider(),
+                _stat('12', 'Orders'), _statDivider(),
+                _stat('4', 'Addresses'), _statDivider(),
+                _stat('3', 'Rx Uploads'), _statDivider(),
                 _stat('2 yrs', 'Member'),
               ]),
             ),
           ),
           const SizedBox(height: 20),
         ]),
-      );
+      ),
+    ),
+  );
+
 
   Widget _stat(String value, String label) => Expanded(
           child: Column(children: [

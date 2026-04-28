@@ -105,7 +105,7 @@ class _TermsScreenState extends State<TermsScreen> {
               const SizedBox(width: 10),
               Expanded(
                   child: Text(
-                      'By using PharmaFlow, you agree to these terms. Last updated: April 2025.',
+                      'By using Afya Hub, you agree to these terms. Last updated: April 2025.',
                       style: const TextStyle(
                           fontSize: 11.5,
                           color: AppColors.green,
@@ -113,17 +113,17 @@ class _TermsScreenState extends State<TermsScreen> {
             ])),
         const SizedBox(height: 20),
         _section('1. Acceptance of Terms',
-            'By accessing or using PharmaFlow, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access the service.'),
+            'By accessing or using Afya Hub, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access the service.'),
         _section('2. Use of Service',
-            'PharmaFlow is a platform connecting users with licensed pharmacies. You must be at least 18 years old to use this service. You are responsible for maintaining the confidentiality of your account credentials.'),
+            'Afya Hub is a platform connecting users with licensed pharmacies. You must be at least 18 years old to use this service. You are responsible for maintaining the confidentiality of your account credentials.'),
         _section('3. Prescription Policy',
             'Uploading a fraudulent or altered prescription is illegal and will result in immediate account termination and may be reported to relevant authorities under the Pharmacy and Poisons Act.'),
         _section('4. Delivery & Fulfillment',
-            'Delivery times are estimates and may vary. PharmaFlow is not liable for delays caused by third-party logistics providers, natural disasters, or other events beyond our control.'),
+            'Delivery times are estimates and may vary. Afya Hub is not liable for delays caused by third-party logistics providers, natural disasters, or other events beyond our control.'),
         _section('5. Returns & Refunds',
             'Prescription medications are non-returnable once dispensed. Non-prescription items may be returned within 7 days in original, unopened condition.'),
         _section('6. Liability Limitation',
-            'PharmaFlow is not a medical provider. Always consult a licensed healthcare professional for medical advice. We are not liable for adverse reactions to medications dispensed by partner pharmacies.'),
+            'Afya Hub is not a medical provider. Always consult a licensed healthcare professional for medical advice. We are not liable for adverse reactions to medications dispensed by partner pharmacies.'),
         _section('7. Changes to Terms',
             'We reserve the right to modify these terms at any time. Continued use of the service after changes constitutes acceptance of the new terms.'),
       ]);
@@ -141,7 +141,7 @@ class _TermsScreenState extends State<TermsScreen> {
               const SizedBox(width: 10),
               Expanded(
                   child: Text(
-                      'Your privacy matters. We comply with the Kenya Data Protection Act 2019.',
+                      'Your privacy matters. We comply with the Tanzania Data Protection Act 2019.',
                       style: const TextStyle(
                           fontSize: 11.5,
                           color: Color(0xFF5B8FC9),
@@ -155,12 +155,12 @@ class _TermsScreenState extends State<TermsScreen> {
         _section('3. Data Security',
             'All data is encrypted at rest (AES-256) and in transit (TLS 1.3). Prescription images are stored in isolated, access-controlled storage with audit logging.'),
         _section('4. Data Retention',
-            'We retain your data for as long as your account is active. Prescription records are retained for 5 years as required by Kenyan pharmacy regulations.'),
+            'We retain your data for as long as your account is active. Prescription records are retained for 5 years as required by Tanzanian pharmacy regulations.'),
         _section('5. Your Rights',
-            'You have the right to access, correct, or delete your personal data. Contact privacy@pharmaflow.co.ke to exercise these rights. We will respond within 30 days.'),
+            'You have the right to access, correct, or delete your personal data. Contact privacy@afyahub.co.tz to exercise these rights. We will respond within 30 days.'),
         _section('6. Cookies',
             'Our app uses session cookies for authentication and analytics cookies to understand usage patterns. You may disable analytics cookies in app settings.'),
         _section('7. Contact Us',
-            'For privacy concerns, contact our Data Protection Officer at privacy@pharmaflow.co.ke or +254 700 987 654.'),
+            'For privacy concerns, contact our Data Protection Officer at privacy@afyahub.co.tz or +255 700 987 654.'),
       ]);
 }
