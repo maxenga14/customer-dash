@@ -91,6 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: CheckoutScreen(
             initialItems: cart.map((e) => e.copy()).toList(),
             onOrderPlaced: () => setState(() => cart.clear()),
+            onGoHome: () => setState(() => selectedIndex = 0),
           ),
         ),
       ),
@@ -550,8 +551,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           label: 'Upload Rx',
           icon: Icons.cloud_upload_rounded,
           bg: const Color(0xFFF2FAF6),
-          onTap: () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const UploadRxScreen())),
+          onTap: () {
+            _navTo(2); // switch to Rx tab
+            // Small delay so the tab's Navigator is mounted before push
+            Future.microtask(() => _tabNavKeys[2].currentState?.push(
+              MaterialPageRoute(builder: (_) => const UploadRxScreen())));
+          },
         )),
         const SizedBox(width: 12),
         Expanded(
@@ -559,13 +564,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           label: 'My Orders',
           icon: Icons.inventory_2_rounded,
           bg: const Color(0xFFFFF8E9),
-          onTap: () => Navigator.push(
-              context,
-              PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 300),
-                pageBuilder: (_, anim, __) =>
-                    FadeTransition(opacity: anim, child: const OrdersScreen()),
-              )),
+          onTap: () => _navTo(1), // switch to Orders tab
         )),
       ],
     );
@@ -603,10 +602,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // ── Active order tracking card ────────────────────────────────────────
   Widget _activeOrderCard() {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
+      onTap: () {
+        _navTo(1); // switch to Orders tab
+        Future.microtask(() => _tabNavKeys[1].currentState?.push(
           MaterialPageRoute(
-              builder: (_) => OrderDetailsScreen(order: mockOrders.first))),
+            builder: (_) => OrderDetailsScreen(order: mockOrders.first))));
+      },
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: cardDecoration(),
@@ -690,13 +691,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // ── Quotation card ───────────────────────────────────────────────────
   Widget _quotationCard() {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 300),
-            pageBuilder: (_, anim, __) => FadeTransition(
-                opacity: anim, child: const PrescriptionsScreen()),
-          )),
+      onTap: () => _navTo(2), // switch to Rx tab (PrescriptionsScreen is root)
       child: Container(
         padding: const EdgeInsets.all(13),
         decoration: BoxDecoration(
@@ -776,10 +771,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         color: Colors.white70, fontSize: 10.5, height: 1.55)),
                 const SizedBox(height: 14),
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const UploadRxScreen())),
+                  onTap: () {
+                    _navTo(2);
+                    Future.microtask(() => _tabNavKeys[2].currentState?.push(
+                      MaterialPageRoute(builder: (_) => const UploadRxScreen())));
+                  },
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 8),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-import '../widgets/animated_bottom_nav.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
   const OrderConfirmationScreen({
@@ -21,6 +20,7 @@ class OrderConfirmationScreen extends StatefulWidget {
   final String paymentPhone;
   final bool isDelivery;
   final VoidCallback? onOrderPlaced; // clears the dashboard cart
+  final VoidCallback? onGoHome;       // switches DashboardScreen to Home tab
 
   @override
   State<OrderConfirmationScreen> createState() =>
@@ -63,6 +63,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
     });
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (mounted) _ring3.repeat();
+    });
+
+    // Auto-dismiss: after 5 s clear cart and return to dashboard
+    Future.delayed(const Duration(seconds: 5), () {
+      if (!mounted) return;
+      widget.onOrderPlaced?.call();
+      widget.onGoHome?.call();
+      Navigator.of(context).popUntil((r) => r.isFirst);
     });
   }
 
@@ -136,9 +144,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                              widget.onOrderPlaced?.call();
-                              Navigator.of(context).popUntil((r) => r.isFirst);
-                            },
+                          widget.onOrderPlaced?.call();
+                          widget.onGoHome?.call();
+                          Navigator.of(context).popUntil((r) => r.isFirst);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.green,
                           foregroundColor: Colors.white,
@@ -147,7 +156,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18)),
                         ),
-                        child: const Text('View Order Details',
+                        child: const Text('Back to Dashboard',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 13)),
                       ),
@@ -155,9 +164,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                     const SizedBox(height: 14),
                     TextButton(
                       onPressed: () {
-                            widget.onOrderPlaced?.call();
-                            Navigator.of(context).popUntil((r) => r.isFirst);
-                          },
+                        widget.onOrderPlaced?.call();
+                        widget.onGoHome?.call();
+                        Navigator.of(context).popUntil((r) => r.isFirst);
+                      },
                       child: const Text('Continue Shopping',
                           style: TextStyle(
                               fontSize: 12.5,
@@ -168,7 +178,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                 ),
               ),
             ),
-            _staticBottomBar(),
           ],
         ),
       ),
@@ -518,49 +527,4 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
     );
   }
 
-  Widget _staticBottomBar() {
-    const items = [
-      (Icons.home_filled, 'Home'),
-      (Icons.inventory_2_outlined, 'Orders'),
-      (Icons.receipt_long_outlined, 'Rx'),
-      (Icons.settings_outlined, 'Settings'),
-    ];
-    return Container(
-      margin: const EdgeInsets.fromLTRB(12, 0, 12, 10),
-      height: 68,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(.07),
-              blurRadius: 22,
-              offset: const Offset(0, 8))
-        ],
-      ),
-      child: Row(
-        children: List.generate(items.length, (index) {
-          final active = index == 1;
-          return Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(items[index].$1,
-                    size: 20,
-                    color: active ? AppColors.green : const Color(0xFFA8B1BE)),
-                const SizedBox(height: 4),
-                Text(items[index].$2,
-                    style: TextStyle(
-                        fontSize: 9.2,
-                        color:
-                            active ? AppColors.green : const Color(0xFFA8B1BE),
-                        fontWeight:
-                            active ? FontWeight.w700 : FontWeight.w500)),
-              ],
-            ),
-          );
-        }),
-      ),
-    );
-  }
 }

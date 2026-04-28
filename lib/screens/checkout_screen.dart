@@ -227,6 +227,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 paymentPhone: phoneController.text.isEmpty ? 'M-Pesa (STK Push)' : phoneController.text,
                                 isDelivery: isDelivery,
                                 onOrderPlaced: widget.onOrderPlaced,
+                                onGoHome: widget.onGoHome,
                               ),
                             ),
                           ),
