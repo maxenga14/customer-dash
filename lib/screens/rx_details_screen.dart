@@ -23,13 +23,21 @@ class RxDetailsScreen extends StatelessWidget {
   final Prescription rx;
 
   static const _items = [
-    RxLineItem(name: 'Amoxicillin 500mg', subtitle: 'Capsules • Qty: 20', price: 12.50, inStock: true),
-    RxLineItem(name: 'Benylin Expectorant', subtitle: 'Syrup 100ml • Qty: 1', price: 8.00, inStock: true),
+    RxLineItem(
+        name: 'Amoxicillin 500mg',
+        subtitle: 'Capsules • Qty: 20',
+        price: 12.50,
+        inStock: true),
+    RxLineItem(
+        name: 'Benylin Expectorant',
+        subtitle: 'Syrup 100ml • Qty: 1',
+        price: 8.00,
+        inStock: true),
   ];
 
-  static const _subtotal   = 20.50;
+  static const _subtotal = 20.50;
   static const _serviceFee = 2.00;
-  static const _total      = 22.50;
+  static const _total = 22.50;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +89,8 @@ class RxDetailsScreen extends StatelessWidget {
             onTap: () => Navigator.pop(context),
             borderRadius: BorderRadius.circular(12),
             child: Container(
-              width: 34, height: 34,
+              width: 34,
+              height: 34,
               decoration: BoxDecoration(
                 color: AppColors.bg,
                 borderRadius: BorderRadius.circular(11),
@@ -96,19 +105,27 @@ class RxDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('Rx Details',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.text)),
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.text)),
                 const SizedBox(height: 2),
                 Row(
                   children: [
                     Container(
-                      width: 6, height: 6,
+                      width: 6,
+                      height: 6,
                       decoration: const BoxDecoration(
-                        color: Color(0xFFF0A529), shape: BoxShape.circle,
+                        color: Color(0xFFF0A529),
+                        shape: BoxShape.circle,
                       ),
                     ),
                     const SizedBox(width: 5),
                     const Text('Action Required',
-                        style: TextStyle(fontSize: 10, color: Color(0xFFF0A529), fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFFF0A529),
+                            fontWeight: FontWeight.w600)),
                   ],
                 ),
               ],
@@ -118,12 +135,14 @@ class RxDetailsScreen extends StatelessWidget {
             onTap: () {},
             borderRadius: BorderRadius.circular(12),
             child: Container(
-              width: 34, height: 34,
+              width: 34,
+              height: 34,
               decoration: BoxDecoration(
                 color: AppColors.bg,
                 borderRadius: BorderRadius.circular(11),
               ),
-              child: const Icon(Icons.more_vert_rounded, size: 18, color: AppColors.text),
+              child: const Icon(Icons.more_vert_rounded,
+                  size: 18, color: AppColors.text),
             ),
           ),
         ],
@@ -151,32 +170,45 @@ class RxDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(width: 90, height: 8, decoration: BoxDecoration(color: Colors.white.withOpacity(.6), borderRadius: BorderRadius.circular(4))),
-                    const SizedBox(height: 8),
-                    ...List.generate(7, (i) => Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: Container(
-                        width: double.infinity * (0.6 + (i % 3) * 0.1),
-                        height: 5,
+                    Container(
+                        width: 90,
+                        height: 8,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.25 + (i % 2) * 0.1),
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      ),
-                    )),
+                            color: Colors.white.withOpacity(.6),
+                            borderRadius: BorderRadius.circular(4))),
+                    const SizedBox(height: 8),
+                    ...List.generate(
+                        7,
+                        (i) => Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: Container(
+                                width: double.infinity * (0.6 + (i % 3) * 0.1),
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: Colors.white
+                                      .withOpacity(.25 + (i % 2) * 0.1),
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                              ),
+                            )),
                   ],
                 ),
               ),
               // Gradient overlay bottom
               Positioned(
-                bottom: 0, left: 0, right: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
                 child: Container(
                   height: 80,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Colors.transparent, Colors.black.withOpacity(.65)],
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(.65)
+                      ],
                     ),
                   ),
                 ),
@@ -186,7 +218,9 @@ class RxDetailsScreen extends StatelessWidget {
         ),
         // Bottom-left label overlay
         Positioned(
-          bottom: 0, left: 0, right: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
           child: Padding(
             padding: const EdgeInsets.all(13),
             child: Row(
@@ -196,24 +230,31 @@ class RxDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('John Doe',
-                          style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700)),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700)),
                       const SizedBox(height: 3),
                       Row(
                         children: [
                           Text('Dr. iacuri, #RX16  •  Oct 24, 2023',
-                              style: TextStyle(color: Colors.white.withOpacity(.8), fontSize: 9.5)),
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(.8),
+                                  fontSize: 9.5)),
                         ],
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  width: 32, height: 32,
+                  width: 32,
+                  height: 32,
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.fullscreen_rounded, color: Colors.white, size: 17),
+                  child: const Icon(Icons.fullscreen_rounded,
+                      color: Colors.white, size: 17),
                 ),
               ],
             ),
@@ -237,12 +278,14 @@ class RxDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 30, height: 30,
+            width: 30,
+            height: 30,
             decoration: BoxDecoration(
               color: const Color(0xFFDDF6E9),
               borderRadius: BorderRadius.circular(9),
             ),
-            child: const Icon(Icons.description_outlined, size: 15, color: AppColors.green),
+            child: const Icon(Icons.description_outlined,
+                size: 15, color: AppColors.green),
           ),
           const SizedBox(width: 10),
           const Expanded(
@@ -250,10 +293,14 @@ class RxDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Quotation Ready',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.text)),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.text)),
                 SizedBox(height: 3),
                 Text('Pharmacy has reviewed\nand priced items.',
-                    style: TextStyle(fontSize: 10.5, color: AppColors.muted, height: 1.45)),
+                    style: TextStyle(
+                        fontSize: 10.5, color: AppColors.muted, height: 1.45)),
               ],
             ),
           ),
@@ -264,7 +311,10 @@ class RxDetailsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Text('Pending Approval',
-                style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: Color(0xFFF0A529))),
+                style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFFF0A529))),
           ),
         ],
       ),
@@ -283,7 +333,8 @@ class RxDetailsScreen extends StatelessWidget {
           Row(
             children: [
               const Text('Quotation Breakdown',
-                  style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700)),
+                  style:
+                      TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700)),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
@@ -292,7 +343,10 @@ class RxDetailsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text('City Care Pharmacy',
-                    style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w700, color: Color(0xFF5B8FC9))),
+                    style: TextStyle(
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF5B8FC9))),
               ),
             ],
           ),
@@ -315,7 +369,10 @@ class RxDetailsScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
               const Spacer(),
               Text('\$${_total.toStringAsFixed(2)}',
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.green)),
+                  style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.green)),
             ],
           ),
         ],
@@ -330,12 +387,14 @@ class RxDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 42, height: 42,
+            width: 42,
+            height: 42,
             decoration: BoxDecoration(
               color: const Color(0xFFEAF3FF),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.medication_outlined, size: 20, color: Color(0xFF5B8FC9)),
+            child: const Icon(Icons.medication_outlined,
+                size: 20, color: Color(0xFF5B8FC9)),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -343,10 +402,12 @@ class RxDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(item.name,
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 3),
                 Text(item.subtitle,
-                    style: const TextStyle(fontSize: 10.2, color: AppColors.muted)),
+                    style: const TextStyle(
+                        fontSize: 10.2, color: AppColors.muted)),
               ],
             ),
           ),
@@ -354,12 +415,15 @@ class RxDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text('\$${item.price.toStringAsFixed(2)}',
-                  style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700)),
+                  style: const TextStyle(
+                      fontSize: 12.5, fontWeight: FontWeight.w700)),
               const SizedBox(height: 4),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                 decoration: BoxDecoration(
-                  color: item.inStock ? const Color(0xFFE9FAF1) : const Color(0xFFFFEEEE),
+                  color: item.inStock
+                      ? const Color(0xFFE9FAF1)
+                      : const Color(0xFFFFEEEE),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -367,7 +431,9 @@ class RxDetailsScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 9,
                     fontWeight: FontWeight.w700,
-                    color: item.inStock ? AppColors.green : const Color(0xFFD14A4A),
+                    color: item.inStock
+                        ? AppColors.green
+                        : const Color(0xFFD14A4A),
                   ),
                 ),
               ),
@@ -381,9 +447,12 @@ class RxDetailsScreen extends StatelessWidget {
   Widget _summaryLine(String label, String value) {
     return Row(
       children: [
-        Text(label, style: const TextStyle(fontSize: 11.5, color: AppColors.muted)),
+        Text(label,
+            style: const TextStyle(fontSize: 11.5, color: AppColors.muted)),
         const Spacer(),
-        Text(value, style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
+        Text(value,
+            style:
+                const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
       ],
     );
   }
@@ -535,8 +604,8 @@ class RxDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Approve & Checkout',
-                      style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w700)),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
                   SizedBox(width: 6),
                   Icon(Icons.arrow_forward_rounded, size: 16),
                 ],
@@ -582,11 +651,11 @@ class _RequestChangesSheetState extends State<_RequestChangesSheet> {
   int? _selectedReason; // index into _reasons list
 
   static const _reasons = [
-    ('Too expensive',         Icons.price_change_outlined),
-    ('Wrong medication',      Icons.medication_outlined),
-    ('Need generic brand',    Icons.swap_horiz_rounded),
-    ('Remove an item',        Icons.remove_circle_outline),
-    ('Other / custom note',   Icons.edit_note_rounded),
+    ('Too expensive', Icons.price_change_outlined),
+    ('Wrong medication', Icons.medication_outlined),
+    ('Need generic brand', Icons.swap_horiz_rounded),
+    ('Remove an item', Icons.remove_circle_outline),
+    ('Other / custom note', Icons.edit_note_rounded),
   ];
 
   bool get _canSend =>
@@ -619,7 +688,8 @@ class _RequestChangesSheetState extends State<_RequestChangesSheet> {
             // ── Handle ────────────────────────────────────────────────
             const SizedBox(height: 10),
             Container(
-              width: 38, height: 4,
+              width: 38,
+              height: 4,
               decoration: BoxDecoration(
                 color: const Color(0xFFDDE3ED),
                 borderRadius: BorderRadius.circular(2),
@@ -642,7 +712,7 @@ class _RequestChangesSheetState extends State<_RequestChangesSheet> {
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.text)),
                         SizedBox(height: 3),
-                        Text('Tell the pharmacy what you'd like updated',
+                        Text('Tell the pharmacy what you\'d like updated',
                             style: TextStyle(
                                 fontSize: 11, color: AppColors.muted)),
                       ],
@@ -692,9 +762,7 @@ class _RequestChangesSheetState extends State<_RequestChangesSheet> {
                         Icon(
                           _reasons[i].$2,
                           size: 13,
-                          color: selected
-                              ? AppColors.green
-                              : AppColors.muted,
+                          color: selected ? AppColors.green : AppColors.muted,
                         ),
                         const SizedBox(width: 6),
                         Text(
@@ -702,9 +770,7 @@ class _RequestChangesSheetState extends State<_RequestChangesSheet> {
                           style: TextStyle(
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
-                            color: selected
-                                ? AppColors.green
-                                : AppColors.text,
+                            color: selected ? AppColors.green : AppColors.text,
                           ),
                         ),
                       ]),
@@ -734,16 +800,14 @@ class _RequestChangesSheetState extends State<_RequestChangesSheet> {
                   contentPadding: const EdgeInsets.all(13),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(color: Color(0xFFDDE3ED))),
+                      borderSide: const BorderSide(color: Color(0xFFDDE3ED))),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(color: Color(0xFFDDE3ED))),
+                      borderSide: const BorderSide(color: Color(0xFFDDE3ED))),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide: const BorderSide(
-                          color: AppColors.green, width: 1.5)),
+                      borderSide:
+                          const BorderSide(color: AppColors.green, width: 1.5)),
                 ),
               ),
             ),
@@ -758,8 +822,8 @@ class _RequestChangesSheetState extends State<_RequestChangesSheet> {
                   onPressed: _canSend ? widget.onSent : null,
                   icon: const Icon(Icons.send_rounded, size: 16),
                   label: const Text('Send Request',
-                      style: TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w700)),
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.green,
                     foregroundColor: Colors.white,

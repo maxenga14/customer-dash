@@ -82,20 +82,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // Push checkout within the CURRENT tab's navigator so the
     // bottom nav bar stays visible throughout the checkout flow.
     _tabNavKeys[selectedIndex].currentState?.push(
-      PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 320),
-        reverseTransitionDuration: const Duration(milliseconds: 260),
-        pageBuilder: (_, animation, __) => SlideTransition(
-          position: Tween(begin: const Offset(1, 0), end: Offset.zero).animate(
-              CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
-          child: CheckoutScreen(
-            initialItems: cart.map((e) => e.copy()).toList(),
-            onOrderPlaced: () => setState(() => cart.clear()),
-            onGoHome: () => setState(() => selectedIndex = 0),
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 320),
+            reverseTransitionDuration: const Duration(milliseconds: 260),
+            pageBuilder: (_, animation, __) => SlideTransition(
+              position: Tween(begin: const Offset(1, 0), end: Offset.zero)
+                  .animate(CurvedAnimation(
+                      parent: animation, curve: Curves.easeOutCubic)),
+              child: CheckoutScreen(
+                initialItems: cart.map((e) => e.copy()).toList(),
+                onOrderPlaced: () => setState(() => cart.clear()),
+                onGoHome: () => setState(() => selectedIndex = 0),
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        );
   }
 
   // ── Tab switching — NO Navigator.push, IndexedStack handles it ──────────
@@ -124,37 +125,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return true; // on Home root → let OS handle (minimize / close)
       },
       child: Scaffold(
-      backgroundColor: AppColors.bg,
-      body: Stack(
-        children: [
-          // ── 4-tab IndexedStack ─────────────────────────────────────
-          IndexedStack(
-            index: selectedIndex,
-            children: [
-              // All 4 tabs use a nested Navigator + Padding so that ANY
-              // Navigator.push from within the tab stays inside the tab's
-              // Navigator — the bottom nav overlay is NEVER covered.
-              _tabShell(0, SafeArea(bottom: false, child: _buildHomeTab())),
-              _tabShell(1, const OrdersScreen()),
-              _tabShell(2, const PrescriptionsScreen()),
-              _tabShell(3, const SettingsScreen()),
-            ],
-          ),
-          // ── Persistent bottom nav overlay ──────────────────────────
-          Positioned(
-            left: 0, right: 0, bottom: 0,
-            child: AnimatedBottomNav(
-              selectedIndex: selectedIndex,
-              hasCart: cart.isNotEmpty,
-              totalItems: totalCartItems,
-              onTap: _navTo,
-              onCheckoutTap: _openCheckout,
+        backgroundColor: AppColors.bg,
+        body: Stack(
+          children: [
+            // ── 4-tab IndexedStack ─────────────────────────────────────
+            IndexedStack(
+              index: selectedIndex,
+              children: [
+                // All 4 tabs use a nested Navigator + Padding so that ANY
+                // Navigator.push from within the tab stays inside the tab's
+                // Navigator — the bottom nav overlay is NEVER covered.
+                _tabShell(0, SafeArea(bottom: false, child: _buildHomeTab())),
+                _tabShell(1, const OrdersScreen()),
+                _tabShell(2, const PrescriptionsScreen()),
+                _tabShell(3, const SettingsScreen()),
+              ],
             ),
-          ),
-        ],
-      ),
-    ),   // end Scaffold
-    );   // end WillPopScope
+            // ── Persistent bottom nav overlay ──────────────────────────
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: AnimatedBottomNav(
+                selectedIndex: selectedIndex,
+                hasCart: cart.isNotEmpty,
+                totalItems: totalCartItems,
+                onTap: _navTo,
+                onCheckoutTap: _openCheckout,
+              ),
+            ),
+          ],
+        ),
+      ), // end Scaffold
+    ); // end WillPopScope
   }
 
   /// Wraps each non-home tab in:
@@ -171,8 +174,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Navigator(
         key: _tabNavKeys[tabNavIndex],
         // Default route = the tab's home screen
-        onGenerateRoute: (_) =>
-            MaterialPageRoute(builder: (_) => home),
+        onGenerateRoute: (_) => MaterialPageRoute(builder: (_) => home),
       ),
     );
   }
@@ -555,7 +557,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             _navTo(2); // switch to Rx tab
             // Small delay so the tab's Navigator is mounted before push
             Future.microtask(() => _tabNavKeys[2].currentState?.push(
-              MaterialPageRoute(builder: (_) => const UploadRxScreen())));
+                MaterialPageRoute(builder: (_) => const UploadRxScreen())));
           },
         )),
         const SizedBox(width: 12),
@@ -605,8 +607,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       onTap: () {
         _navTo(1); // switch to Orders tab
         Future.microtask(() => _tabNavKeys[1].currentState?.push(
-          MaterialPageRoute(
-            builder: (_) => OrderDetailsScreen(order: mockOrders.first))));
+            MaterialPageRoute(
+                builder: (_) => OrderDetailsScreen(order: mockOrders.first))));
       },
       child: Container(
         padding: const EdgeInsets.all(14),
@@ -774,7 +776,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   onTap: () {
                     _navTo(2);
                     Future.microtask(() => _tabNavKeys[2].currentState?.push(
-                      MaterialPageRoute(builder: (_) => const UploadRxScreen())));
+                        MaterialPageRoute(
+                            builder: (_) => const UploadRxScreen())));
                   },
                   child: Container(
                     padding:

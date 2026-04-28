@@ -11,6 +11,7 @@ class OrderConfirmationScreen extends StatefulWidget {
     required this.paymentPhone,
     required this.isDelivery,
     this.onOrderPlaced,
+    this.onGoHome,
   });
 
   final String orderNumber;
@@ -20,7 +21,7 @@ class OrderConfirmationScreen extends StatefulWidget {
   final String paymentPhone;
   final bool isDelivery;
   final VoidCallback? onOrderPlaced; // clears the dashboard cart
-  final VoidCallback? onGoHome;       // switches DashboardScreen to Home tab
+  final VoidCallback? onGoHome; // switches DashboardScreen to Home tab
 
   @override
   State<OrderConfirmationScreen> createState() =>
@@ -526,5 +527,4 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
       ],
     );
   }
-
 }

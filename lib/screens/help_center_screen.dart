@@ -66,7 +66,10 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   const SizedBox(height: 24),
                   _sectionLabel('FREQUENTLY ASKED QUESTIONS'),
                   const SizedBox(height: 10),
-                  ..._filtered.asMap().entries.map((e) => _faqTile(e.key, e.value)),
+                  ..._filtered
+                      .asMap()
+                      .entries
+                      .map((e) => _faqTile(e.key, e.value)),
                   if (_filtered.isEmpty) _emptySearch(),
                   const SizedBox(height: 24),
                   _contactBanner(context),
@@ -94,6 +97,19 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         ]),
       );
 
+  Widget _backBtn(BuildContext context) => InkWell(
+        onTap: () => Navigator.pop(context),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          width: 34,
+          height: 34,
+          decoration: BoxDecoration(
+              color: AppColors.bg, borderRadius: BorderRadius.circular(11)),
+          child: const Icon(Icons.arrow_back_ios_new_rounded,
+              size: 15, color: AppColors.text),
+        ),
+      );
+
   Widget _searchBox() => Container(
         decoration: BoxDecoration(
             color: Colors.white,
@@ -110,8 +126,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           style: const TextStyle(fontSize: 13),
           decoration: InputDecoration(
             hintText: 'Search for help...',
-            hintStyle:
-                const TextStyle(fontSize: 13, color: AppColors.muted),
+            hintStyle: const TextStyle(fontSize: 13, color: AppColors.muted),
             prefixIcon: const Icon(Icons.search_rounded,
                 size: 20, color: AppColors.muted),
             suffixIcon: _query.isNotEmpty
@@ -132,40 +147,69 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
 
   Widget _quickLinks() {
     final links = [
-      (Icons.local_shipping_outlined, 'Track Order', AppColors.green, const Color(0xFFE9FAF1)),
-      (Icons.assignment_return_outlined, 'Returns', const Color(0xFF5B8FC9), const Color(0xFFEAF3FF)),
-      (Icons.receipt_long_outlined, 'Billing', const Color(0xFFF0A529), const Color(0xFFFFF5DE)),
-      (Icons.shield_outlined, 'Privacy', const Color(0xFF9B6FDF), const Color(0xFFF3EEFF)),
+      (
+        Icons.local_shipping_outlined,
+        'Track Order',
+        AppColors.green,
+        const Color(0xFFE9FAF1)
+      ),
+      (
+        Icons.assignment_return_outlined,
+        'Returns',
+        const Color(0xFF5B8FC9),
+        const Color(0xFFEAF3FF)
+      ),
+      (
+        Icons.receipt_long_outlined,
+        'Billing',
+        const Color(0xFFF0A529),
+        const Color(0xFFFFF5DE)
+      ),
+      (
+        Icons.shield_outlined,
+        'Privacy',
+        const Color(0xFF9B6FDF),
+        const Color(0xFFF3EEFF)
+      ),
     ];
     return Row(
-      children: links.map((l) => Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 8, offset: const Offset(0, 3))]),
-              child: Column(children: [
-                Container(
-                  width: 38, height: 38,
-                  decoration: BoxDecoration(color: l.$4, shape: BoxShape.circle),
-                  child: Icon(l.$1, size: 18, color: l.$3),
+      children: links
+          .map((l) => Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(.04),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3))
+                          ]),
+                      child: Column(children: [
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                              color: l.$4, shape: BoxShape.circle),
+                          child: Icon(l.$1, size: 18, color: l.$3),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(l.$2,
+                            style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.text)),
+                      ]),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 8),
-                Text(l.$2,
-                    style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.text)),
-              ]),
-            ),
-          ),
-        ),
-      )).toList(),
+              ))
+          .toList(),
     );
   }
 
@@ -204,11 +248,10 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               child: Row(
                 children: [
                   Container(
-                    width: 28, height: 28,
+                    width: 28,
+                    height: 28,
                     decoration: BoxDecoration(
-                        color: open
-                            ? AppColors.lightGreen
-                            : AppColors.bg,
+                        color: open ? AppColors.lightGreen : AppColors.bg,
                         shape: BoxShape.circle),
                     child: Icon(Icons.help_outline_rounded,
                         size: 15,
@@ -249,10 +292,14 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   Widget _emptySearch() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 32),
         child: Column(children: [
-          Icon(Icons.search_off_rounded, size: 48, color: AppColors.muted.withOpacity(.4)),
+          Icon(Icons.search_off_rounded,
+              size: 48, color: AppColors.muted.withOpacity(.4)),
           const SizedBox(height: 12),
           const Text('No results found',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.muted)),
+              style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.muted)),
           const SizedBox(height: 4),
           const Text('Try different keywords or contact support',
               style: TextStyle(fontSize: 11.5, color: AppColors.muted)),
@@ -268,31 +315,43 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 end: Alignment.bottomRight),
             borderRadius: BorderRadius.circular(20)),
         child: Row(children: [
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('Still need help?',
-                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w800)),
-            const SizedBox(height: 4),
-            const Text('Our support team is online\n24/7 to assist you.',
-                style: TextStyle(color: Color(0xFFD0F5E8), fontSize: 11.5, height: 1.5)),
-            const SizedBox(height: 14),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AppColors.green,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-              child: const Text('Contact Support',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-            ),
-          ])),
+          Expanded(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                const Text('Still need help?',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800)),
+                const SizedBox(height: 4),
+                const Text('Our support team is online\n24/7 to assist you.',
+                    style: TextStyle(
+                        color: Color(0xFFD0F5E8), fontSize: 11.5, height: 1.5)),
+                const SizedBox(height: 14),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.green,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12))),
+                  child: const Text('Contact Support',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                ),
+              ])),
           const SizedBox(width: 12),
           Container(
-            width: 56, height: 56,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
                 color: Colors.white.withOpacity(.15), shape: BoxShape.circle),
-            child: const Icon(Icons.support_agent_rounded, color: Colors.white, size: 28),
+            child: const Icon(Icons.support_agent_rounded,
+                color: Colors.white, size: 28),
           ),
         ]),
       );
