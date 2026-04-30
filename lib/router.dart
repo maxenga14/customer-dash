@@ -8,6 +8,10 @@ import 'screens/order_confirmation_screen.dart';
 import 'screens/prescriptions_screen.dart';
 import 'screens/upload_rx_screen.dart';
 import 'screens/rx_details_screen.dart';
+import 'screens/family_management_screen.dart';
+import 'screens/medical_profile_screen.dart';
+import 'screens/notifications_screen.dart';
+import 'screens/search_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/saved_addresses_screen.dart';
 import 'screens/checkout_screen.dart';
@@ -29,6 +33,10 @@ class AppRoutes {
   static const rxDetails = '/prescriptions/details';
   static const settings = '/settings';
   static const savedAddresses = '/settings/addresses';
+  static const familyManagement = '/settings/family';
+  static const medicalProfile = '/settings/medical';
+  static const notifications = '/notifications';
+  static const search = '/search';
 }
 
 // ── Route generator ───────────────────────────────────────────────────
@@ -84,6 +92,19 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case AppRoutes.savedAddresses:
       return _slideRoute(const SavedAddressesScreen());
+
+    case AppRoutes.familyManagement:
+      return _slideRoute(const FamilyManagementScreen());
+
+    case AppRoutes.medicalProfile:
+      return _slideRoute(const MedicalProfileScreen());
+
+    case AppRoutes.notifications:
+      return _slideRoute(const NotificationsScreen());
+
+    case AppRoutes.search:
+      final q = settings.arguments as String? ?? '';
+      return _slideRoute(SearchScreen(initialQuery: q));
 
     // ── 404 fallback ───────────────────────────────────────────────
     default:

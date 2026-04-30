@@ -4,6 +4,7 @@ import '../models/user_profile.dart';
 import '../data/orders_data.dart';
 import '../models/cart_item.dart';
 import '../theme/app_theme.dart';
+import '../router.dart';
 import '../widgets/animated_bottom_nav.dart';
 import '../widgets/common.dart';
 import '../widgets/product_mock_art.dart';
@@ -264,7 +265,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             fontWeight: FontWeight.w700,
                             fontSize: 15.5)),
                   ])),
-              Stack(
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, AppRoutes.notifications),
+                child: Stack(
                 children: [
                   Container(
                     width: 32,
@@ -290,13 +293,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                 ],
-              ),
+              )),
             ]),
           ),
           const SizedBox(height: 14),
           // Search bar
           GestureDetector(
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, AppRoutes.search),
             child: Container(
               height: 40,
               padding: const EdgeInsets.symmetric(horizontal: 14),

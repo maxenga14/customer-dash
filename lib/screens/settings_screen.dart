@@ -6,6 +6,9 @@ import '../widgets/common.dart';
 import 'change_password_screen.dart';
 import 'contact_support_screen.dart';
 import 'help_center_screen.dart';
+import 'family_management_screen.dart';
+import 'medical_profile_screen.dart';
+import 'notifications_screen.dart';
 import 'personal_info_screen.dart';
 import 'saved_addresses_screen.dart';
 import 'terms_screen.dart';
@@ -22,6 +25,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _smsAlerts = true;
   bool _twoFactor = false;
   bool _biometrics = true;
+  bool _preferGenerics = false;
 
   void _push(Widget screen) =>
       Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
@@ -113,6 +117,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _menuItem(Icons.location_on_outlined, 'Saved Addresses',
                           subtitle: 'Manage delivery locations',
                           onTap: () => _push(const SavedAddressesScreen())),
+                      _menuItem(Icons.group_outlined, 'Family Members',
+                          subtitle: 'Add members to order on their behalf',
+                          onTap: () => _push(const FamilyManagementScreen())),
+                      _menuItem(Icons.favorite_border_rounded, 'Medical Profile',
+                          subtitle: 'Blood type, allergies, conditions',
+                          onTap: () => _push(const MedicalProfileScreen())),
+                    ]),
+                    const SizedBox(height: 22),
+
+                    // ── PREFERENCES ──────────────────────────────────────
+                    _groupLabel('PREFERENCES'),
+                    const SizedBox(height: 8),
+                    _menuGroup([
+                      _menuItem(Icons.savings_outlined, 'Suggest Cheaper Alternatives',
+                          subtitle: 'Show generic equivalents at checkout',
+                          trailing: Switch(
+                              value: _preferGenerics,
+                              onChanged: (v) => setState(() => _preferGenerics = v),
+                              activeColor: AppColors.green,
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                          onTap: () => setState(() => _preferGenerics = !_preferGenerics),
+                          showChevron: false,
+                          isLast: true),
                     ]),
                     const SizedBox(height: 22),
 
