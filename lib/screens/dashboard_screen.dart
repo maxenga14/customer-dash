@@ -236,17 +236,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ValueListenableBuilder<UserProfileData>(
             valueListenable: UserProfile.instance,
             builder: (_, profile, __) => Row(children: [
-              Container(width:36,height:36,
-                decoration:BoxDecoration(color:Colors.white.withOpacity(.18),shape:BoxShape.circle),
-                child:profile.avatarBytes!=null
-                    ?ClipOval(child:Image.memory(profile.avatarBytes!,fit:BoxFit.cover,width:36,height:36))
-                    :const Icon(Icons.person_rounded,color:Colors.white,size:18)),
-              const SizedBox(width:10),
-              Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
-                const Text('Habari yako,',style:TextStyle(color:Color(0xFFD8FFF0),fontSize:10.0)),
-                const SizedBox(height:2),
-                Text(profile.firstName,style:const TextStyle(color:Colors.white,fontWeight:FontWeight.w700,fontSize:15.5)),
-              ])),
+              Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.18),
+                      shape: BoxShape.circle),
+                  child: profile.avatarBytes != null
+                      ? ClipOval(
+                          child: Image.memory(profile.avatarBytes!,
+                              fit: BoxFit.cover, width: 36, height: 36))
+                      : const Icon(Icons.person_rounded,
+                          color: Colors.white, size: 18)),
+              const SizedBox(width: 10),
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    const Text('Habari yako,',
+                        style: TextStyle(
+                            color: Color(0xFFD8FFF0), fontSize: 10.0)),
+                    const SizedBox(height: 2),
+                    Text(profile.name.trim().split(' ').first,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15.5)),
+                  ])),
               Stack(
                 children: [
                   Container(
@@ -274,8 +290,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                 ],
               ),
-            ],
+            ]),
           ),
+          const SizedBox(height: 14),
+          _pharmacyBanner(),
           const SizedBox(height: 14),
           // Search bar
           GestureDetector(

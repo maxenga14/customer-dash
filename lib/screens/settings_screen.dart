@@ -6,6 +6,7 @@ import '../widgets/common.dart';
 import 'change_password_screen.dart';
 import 'contact_support_screen.dart';
 import 'help_center_screen.dart';
+import 'personal_info_screen.dart';
 import 'saved_addresses_screen.dart';
 import 'terms_screen.dart';
 
@@ -107,7 +108,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _menuGroup([
                       _menuItem(
                           Icons.person_outline_rounded, 'Personal Information',
-                          subtitle: 'Name, email, phone, gender', onTap: () {}),
+                          subtitle: 'Name, email, phone, gender',
+                          onTap: () => _push(const PersonalInfoScreen())),
                       _menuItem(Icons.location_on_outlined, 'Saved Addresses',
                           subtitle: 'Manage delivery locations',
                           onTap: () => _push(const SavedAddressesScreen())),
@@ -216,60 +218,86 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _profileHeader() => ValueListenableBuilder<UserProfileData>(
-    valueListenable: UserProfile.instance,
-    builder: (context, profile, _) => GestureDetector(
-      onTap: () => _push(const PersonalInfoScreen()),
-      child: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: [AppColors.greenDark, AppColors.green],
-              begin: Alignment.topLeft, end: Alignment.bottomRight),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(28), bottomRight: Radius.circular(28)),
-        ),
-        child: Column(children: [
-          const SizedBox(height: 20),
-          Stack(alignment: Alignment.bottomRight, children: [
-            Container(width: 80, height: 80,
-              decoration: BoxDecoration(color: const Color(0xFFE2EAF5), shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 3)),
-              child: profile.avatarBytes != null
-                  ? ClipOval(child: Image.memory(profile.avatarBytes!, fit: BoxFit.cover, width: 80, height: 80))
-                  : const Icon(Icons.person_rounded, size: 42, color: Color(0xFF6E86AE))),
-            Container(width: 26, height: 26,
-              decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.green, width: 2)),
-              child: const Icon(Icons.camera_alt_rounded, size: 13, color: AppColors.green)),
-          ]),
-          const SizedBox(height: 10),
-          Text(profile.name,
-              style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w800)),
-          const SizedBox(height: 3),
-          Text(profile.phone, style: const TextStyle(color: Color(0xFFD0F5E8), fontSize: 11.5)),
-          const SizedBox(height: 4),
-          const Text('Tap to edit profile',
-              style: TextStyle(color: Color(0xFFADE8CE), fontSize: 10, fontWeight: FontWeight.w500)),
-          const SizedBox(height: 14),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              decoration: BoxDecoration(color: Colors.white.withOpacity(.12), borderRadius: BorderRadius.circular(18)),
-              child: Row(children: [
-                _stat('12', 'Orders'), _statDivider(),
-                _stat('4', 'Addresses'), _statDivider(),
-                _stat('3', 'Rx Uploads'), _statDivider(),
-                _stat('2 yrs', 'Member'),
-              ]),
+        valueListenable: UserProfile.instance,
+        builder: (context, profile, _) => GestureDetector(
+          onTap: () => _push(const PersonalInfoScreen()),
+          child: Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [AppColors.greenDark, AppColors.green],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(28),
+                  bottomRight: Radius.circular(28)),
             ),
+            child: Column(children: [
+              const SizedBox(height: 20),
+              Stack(alignment: Alignment.bottomRight, children: [
+                Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFE2EAF5),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 3)),
+                    child: profile.avatarBytes != null
+                        ? ClipOval(
+                            child: Image.memory(profile.avatarBytes!,
+                                fit: BoxFit.cover, width: 80, height: 80))
+                        : const Icon(Icons.person_rounded,
+                            size: 42, color: Color(0xFF6E86AE))),
+                Container(
+                    width: 26,
+                    height: 26,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.green, width: 2)),
+                    child: const Icon(Icons.camera_alt_rounded,
+                        size: 13, color: AppColors.green)),
+              ]),
+              const SizedBox(height: 10),
+              Text(profile.name,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800)),
+              const SizedBox(height: 3),
+              Text(profile.phone,
+                  style: const TextStyle(
+                      color: Color(0xFFD0F5E8), fontSize: 11.5)),
+              const SizedBox(height: 4),
+              const Text('Tap to edit profile',
+                  style: TextStyle(
+                      color: Color(0xFFADE8CE),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500)),
+              const SizedBox(height: 14),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.12),
+                      borderRadius: BorderRadius.circular(18)),
+                  child: Row(children: [
+                    _stat('12', 'Orders'),
+                    _statDivider(),
+                    _stat('4', 'Addresses'),
+                    _statDivider(),
+                    _stat('3', 'Rx Uploads'),
+                    _statDivider(),
+                    _stat('2 yrs', 'Member'),
+                  ]),
+                ),
+              ),
+              const SizedBox(height: 20),
+            ]),
           ),
-          const SizedBox(height: 20),
-        ]),
-      ),
-    ),
-  );
-
+        ),
+      );
 
   Widget _stat(String value, String label) => Expanded(
           child: Column(children: [
