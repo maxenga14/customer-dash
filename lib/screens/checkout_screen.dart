@@ -4,10 +4,8 @@ import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'order_confirmation_screen.dart';
 import '../data/family_data.dart';
-import '../models/family_member.dart';
 import '../models/user_profile.dart';
 import '../utils/formatters.dart';
-
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({
@@ -27,6 +25,7 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   late List<CartItem> items;
   bool isDelivery = true;
+  String _beneficiaryId = 'self';
   final addressController =
       TextEditingController(text: 'House 21, Makole Road, Dodoma');
   final phoneController = TextEditingController();
@@ -115,7 +114,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     // ── Order For ─────────────────────────────────────
                     const Text('Order For',
                         style: TextStyle(
-                            fontSize: 12.5, fontWeight: FontWeight.w700,
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w700,
                             color: Color(0xFF8C97A8))),
                     const SizedBox(height: 6),
                     _beneficiarySelector(),
@@ -364,12 +364,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.border)),
         child: Row(children: [
-          const Icon(Icons.person_outline_rounded, size: 16, color: AppColors.muted),
+          const Icon(Icons.person_outline_rounded,
+              size: 16, color: AppColors.muted),
           const SizedBox(width: 8),
           Expanded(
               child: Text(displayName,
                   style: const TextStyle(fontSize: 13, color: AppColors.text))),
-          const Icon(Icons.keyboard_arrow_down_rounded, size: 18, color: AppColors.muted),
+          const Icon(Icons.keyboard_arrow_down_rounded,
+              size: 18, color: AppColors.muted),
         ]),
       ),
     );
@@ -387,7 +389,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 36),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Container(
-                width: 40, height: 4,
+                width: 40,
+                height: 4,
                 decoration: BoxDecoration(
                     color: AppColors.border,
                     borderRadius: BorderRadius.circular(4))),
@@ -396,25 +399,37 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 alignment: Alignment.centerLeft,
                 child: Text('Who is this order for?',
                     style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
                         color: AppColors.text))),
             const SizedBox(height: 14),
-            _beneficiaryOption(ctx: ctx, setS: setS, id: 'self', name: 'Myself',
-                sub: profile.name, icon: Icons.person_rounded),
+            _beneficiaryOption(
+                ctx: ctx,
+                setS: setS,
+                id: 'self',
+                name: 'Myself',
+                sub: profile.name,
+                icon: Icons.person_rounded),
             if (mockFamilyMembers.isNotEmpty) ...[
               const SizedBox(height: 12),
               const Align(
                   alignment: Alignment.centerLeft,
                   child: Text('FAMILY MEMBERS',
                       style: TextStyle(
-                          fontSize: 10, fontWeight: FontWeight.w700,
-                          color: AppColors.muted, letterSpacing: .6))),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.muted,
+                          letterSpacing: .6))),
               const SizedBox(height: 8),
               ...mockFamilyMembers.map((m) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: _beneficiaryOption(
-                        ctx: ctx, setS: setS, id: m.id, name: m.name,
-                        sub: m.relationship, icon: Icons.group_outlined),
+                        ctx: ctx,
+                        setS: setS,
+                        id: m.id,
+                        name: m.name,
+                        sub: m.relationship,
+                        icon: Icons.group_outlined),
                   )),
             ],
           ]),
@@ -443,28 +458,32 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         decoration: BoxDecoration(
             color: sel ? AppColors.lightGreen : AppColors.bg,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: sel ? AppColors.green : AppColors.border)),
+            border:
+                Border.all(color: sel ? AppColors.green : AppColors.border)),
         child: Row(children: [
           Container(
-            width: 36, height: 36,
+            width: 36,
+            height: 36,
             decoration: BoxDecoration(
                 color: sel ? AppColors.green : AppColors.border,
                 shape: BoxShape.circle),
-            child: Icon(icon, size: 16,
-                color: sel ? Colors.white : AppColors.muted),
+            child: Icon(icon,
+                size: 16, color: sel ? Colors.white : AppColors.muted),
           ),
           const SizedBox(width: 12),
           Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-            Text(name,
-                style: TextStyle(
-                    fontSize: 13.5, fontWeight: FontWeight.w700,
-                    color: sel ? AppColors.green : AppColors.text)),
-            Text(sub,
-                style: const TextStyle(
-                    fontSize: 12, color: AppColors.muted)),
-          ])),
+                Text(name,
+                    style: TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w700,
+                        color: sel ? AppColors.green : AppColors.text)),
+                Text(sub,
+                    style:
+                        const TextStyle(fontSize: 12, color: AppColors.muted)),
+              ])),
           if (sel)
             const Icon(Icons.check_circle_rounded,
                 size: 18, color: AppColors.green),
