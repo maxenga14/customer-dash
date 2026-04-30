@@ -27,6 +27,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final addressController =
       TextEditingController(text: 'House 21, Makole Road, Dodoma');
   final phoneController = TextEditingController();
+  // TODO(phase-4): Replace with PharmacySessionProvider.deliveryFee
+  // which will be populated by the calculate-delivery-fee Supabase edge function.
+  // Edge fn signature: { customer_lat, customer_lng, pharmacy_id } → { fee_tsh: int }
+  // Afya Hub also uses this placeholder until the UI call is wired up.
   final double deliveryFee = 5000.0;
 
   @override
