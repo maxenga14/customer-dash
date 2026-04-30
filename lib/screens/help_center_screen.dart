@@ -11,7 +11,7 @@ const _faqs = [
   _FAQ('How do I upload a prescription?',
       'Go to the Rx tab and tap "Upload Prescription". You can take a photo or pick from your gallery. Once submitted, a pharmacist reviews it within 30 minutes.'),
   _FAQ('How long does delivery take?',
-      'Standard delivery takes 1–3 hours within Nairobi. You can track your order in real-time from the Orders tab.'),
+      'Standard delivery takes 1–3 hours within your city. You can track your order in real-time from the Orders tab.'),
   _FAQ('Can I reorder a previous prescription?',
       'Yes. Open any past order in the Orders tab and tap "Reorder". Items will be pre-filled in your cart.'),
   _FAQ('How do I change or cancel an order?',
@@ -19,7 +19,7 @@ const _faqs = [
   _FAQ('What payment methods are accepted?',
       'We accept M-Pesa (STK Push), Visa, and Mastercard. Manage your payment methods in Settings → Payment Methods.'),
   _FAQ('Is my health data secure?',
-      'All prescription data is encrypted at rest and in transit. We comply with Kenya Data Protection Act 2019. We never share your data with third parties.'),
+      'All prescription data is encrypted at rest and in transit. We comply with the Tanzania Personal Data Protection Act 2022. We never share your data with third parties.'),
   _FAQ('How do I set a default delivery address?',
       'Go to Settings → Saved Addresses and tap "Set as Default" under any address.'),
 ];

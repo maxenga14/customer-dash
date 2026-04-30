@@ -3,6 +3,8 @@ import '../models/cart_item.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'order_confirmation_screen.dart';
+import '../utils/formatters.dart';
+
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({
@@ -25,7 +27,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final addressController =
       TextEditingController(text: 'House 21, Makole Road, Dodoma');
   final phoneController = TextEditingController();
-  final double deliveryFee = 5.50;
+  final double deliveryFee = 5000.0;
 
   @override
   void initState() {
@@ -144,7 +146,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text('\$${item.price.toStringAsFixed(2)}',
+                                Text(formatTsh(item.price),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 11.2)),
@@ -266,7 +268,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: 'Enter phone number',
+                        hintText: '+255 7XX XXX XXX',
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14, vertical: 16),
                         border: OutlineInputBorder(
@@ -414,7 +416,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 color: emphasize ? AppColors.text : AppColors.muted,
                 fontWeight: emphasize ? FontWeight.w800 : FontWeight.w600)),
         const Spacer(),
-        Text('\$${amount.toStringAsFixed(2)}',
+        Text(formatTsh(amount),
             style: TextStyle(
                 fontSize: compact ? 11.2 : 12.2,
                 color: emphasize ? AppColors.yellow : AppColors.text,

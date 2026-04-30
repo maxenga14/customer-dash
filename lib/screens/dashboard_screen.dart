@@ -13,6 +13,8 @@ import 'prescriptions_screen.dart';
 import 'settings_screen.dart';
 import 'order_details_screen.dart';
 import 'upload_rx_screen.dart';
+import '../utils/formatters.dart';
+
 
 // ── Dashboard user state ──────────────────────────────────────────────────
 // In a real app these come from backend/auth. Toggled here for demo.
@@ -615,7 +617,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               style: const TextStyle(
                                   fontSize: 10, color: AppColors.muted)),
                           const SizedBox(height: 4),
-                          Text('\$${p.price.toStringAsFixed(2)}',
+                          Text(formatTsh(p.price),
                               style: const TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.w700)),
                         ],
@@ -828,7 +830,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 10),
           Row(
             children: [
-              Text('\$${p.price.toStringAsFixed(2)}',
+              Text(formatTsh(p.price),
                   style: const TextStyle(
                       fontSize: 13.5, fontWeight: FontWeight.w800)),
               const Spacer(),

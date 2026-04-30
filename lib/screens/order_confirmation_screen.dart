@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../utils/formatters.dart';
+
 
 class OrderConfirmationScreen extends StatefulWidget {
   const OrderConfirmationScreen({
@@ -500,7 +502,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                   style:
                       TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800)),
               const Spacer(),
-              Text('\$${total.toStringAsFixed(2)}',
+              Text(formatTsh(total),
                   style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
@@ -521,7 +523,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                 color: AppColors.muted,
                 fontWeight: FontWeight.w500)),
         const Spacer(),
-        Text('\$${amount.toStringAsFixed(2)}',
+        Text(formatTsh(amount),
             style:
                 const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700)),
       ],

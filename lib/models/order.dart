@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-enum OrderStatus { onRoute, needsAction, delivered, cancelled }
+// Matches Afya-Hub backend: received → processing → ready → delivered → cancelled
+enum OrderStatus { received, processing, ready, delivered, cancelled }
 
 class Order {
   const Order({
@@ -27,37 +28,41 @@ class Order {
 extension OrderStatusExt on OrderStatus {
   String get label {
     switch (this) {
-      case OrderStatus.onRoute: return 'ON ROUTE';
-      case OrderStatus.needsAction: return 'NEEDS ACTION';
-      case OrderStatus.delivered: return 'DELIVERED';
-      case OrderStatus.cancelled: return 'CANCELLED';
+      case OrderStatus.received:   return 'RECEIVED';
+      case OrderStatus.processing: return 'PROCESSING';
+      case OrderStatus.ready:      return 'READY';
+      case OrderStatus.delivered:  return 'DELIVERED';
+      case OrderStatus.cancelled:  return 'CANCELLED';
     }
   }
 
   Color get badgeColor {
     switch (this) {
-      case OrderStatus.onRoute: return const Color(0xFFF0A529);
-      case OrderStatus.needsAction: return const Color(0xFF5B8FC9);
-      case OrderStatus.delivered: return const Color(0xFF17A772);
-      case OrderStatus.cancelled: return const Color(0xFFD14A4A);
+      case OrderStatus.received:   return const Color(0xFF5B8FC9);
+      case OrderStatus.processing: return const Color(0xFFF0A529);
+      case OrderStatus.ready:      return const Color(0xFF17A772);
+      case OrderStatus.delivered:  return const Color(0xFF17A772);
+      case OrderStatus.cancelled:  return const Color(0xFFD14A4A);
     }
   }
 
   Color get badgeBg {
     switch (this) {
-      case OrderStatus.onRoute: return const Color(0xFFFFF5DE);
-      case OrderStatus.needsAction: return const Color(0xFFEAF3FF);
-      case OrderStatus.delivered: return const Color(0xFFE9FAF1);
-      case OrderStatus.cancelled: return const Color(0xFFFFEEEE);
+      case OrderStatus.received:   return const Color(0xFFEAF3FF);
+      case OrderStatus.processing: return const Color(0xFFFFF5DE);
+      case OrderStatus.ready:      return const Color(0xFFE9FAF1);
+      case OrderStatus.delivered:  return const Color(0xFFE9FAF1);
+      case OrderStatus.cancelled:  return const Color(0xFFFFEEEE);
     }
   }
 
   IconData get badgeIcon {
     switch (this) {
-      case OrderStatus.onRoute: return Icons.local_shipping_outlined;
-      case OrderStatus.needsAction: return Icons.warning_amber_rounded;
-      case OrderStatus.delivered: return Icons.check_circle_outline_rounded;
-      case OrderStatus.cancelled: return Icons.cancel_outlined;
+      case OrderStatus.received:   return Icons.inbox_outlined;
+      case OrderStatus.processing: return Icons.local_shipping_outlined;
+      case OrderStatus.ready:      return Icons.check_circle_outline_rounded;
+      case OrderStatus.delivered:  return Icons.check_circle_outline_rounded;
+      case OrderStatus.cancelled:  return Icons.cancel_outlined;
     }
   }
 }

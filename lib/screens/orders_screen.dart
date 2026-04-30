@@ -9,6 +9,8 @@ import 'checkout_screen.dart';
 import 'order_details_screen.dart';
 import 'rx_details_screen.dart';
 import '../widgets/product_mock_art.dart';
+import '../utils/formatters.dart';
+
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -44,13 +46,13 @@ class _OrdersScreenState extends State<OrdersScreen>
     List<Order> list;
     switch (_tabController.index) {
       case 1:
-        list = all.where((o) => o.status == OrderStatus.onRoute || o.status == OrderStatus.needsAction).toList();
+        list = all.where((o) => o.status == OrderStatus.processing || o.status == OrderStatus.received || o.status == OrderStatus.ready).toList();
         break;
       case 2:
-        list = all.where((o) => o.status == OrderStatus.delivered).toList();
+        list = all.where((o) => o.status == OrderStatus.delivered || o.status == OrderStatus.cancelled).toList();
         break;
       case 3:
-        list = all.where((o) => o.status == OrderStatus.needsAction).toList();
+        list = all.where((o) => o.status == OrderStatus.received).toList();
         break;
       default:
         list = all;
@@ -272,7 +274,7 @@ class _OrderCard extends StatelessWidget {
           const SizedBox(height: 12),
 
           // ── quotation card (needsAction only)
-          if (order.status == OrderStatus.needsAction &&
+          if (order.status == OrderStatus.received &&
               order.quotationNote != null) ...[
             Container(
               width: double.infinity,
@@ -375,7 +377,7 @@ class _OrderCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '\$${order.total.toStringAsFixed(2)}',
+                        formatTsh(order.total),
                         style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w800,
@@ -396,7 +398,7 @@ class _OrderCard extends StatelessWidget {
   }
 
   Widget _actionRow(Order order) {
-    if (order.status == OrderStatus.onRoute) {
+    if (order.status == OrderStatus.processing) {
       return Row(
         children: [
           Expanded(

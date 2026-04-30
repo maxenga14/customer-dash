@@ -4,6 +4,8 @@ import '../models/order.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'checkout_screen.dart';
+import '../utils/formatters.dart';
+
 
 /// Represents one item in an order for the details view
 class OrderLineItem {
@@ -31,13 +33,13 @@ class OrderDetailsScreen extends StatelessWidget {
   final Order order;
   final bool hasPrescription;
 
-  bool get _isOnRoute => order.status == OrderStatus.onRoute;
+  bool get _isOnRoute => order.status == OrderStatus.processing;
   bool get _isDelivered => order.status == OrderStatus.delivered;
 
   // Sample line items — in production these come from the order model
   static final _items = [
-    const OrderLineItem(name: 'Paracetamol 500mg', subtitle: 'Pack of 16', price: 5.50, qty: 1, imageBg: Color(0xFFEAF3FF)),
-    const OrderLineItem(name: 'Benylin Dry Cough', subtitle: '150ml bottle', price: 12.00, qty: 1, imageBg: Color(0xFFFFF1F1)),
+    const OrderLineItem(name: 'Paracetamol 500mg', subtitle: 'Pack of 16', price: 2500, qty: 1, imageBg: Color(0xFFEAF3FF)),
+    const OrderLineItem(name: 'Benylin Dry Cough', subtitle: '150ml bottle', price: 8000, qty: 1, imageBg: Color(0xFFFFF1F1)),
   ];
 
   /// Static version so other screens (e.g. OrdersScreen) can reorder without
@@ -145,7 +147,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w700)),
                                 SizedBox(height: 3),
                                 Text(
-                                  '123 Health Avenue, Block 6, Apt 4C\nNairobi, Kenya',
+                                  '123 Uhuru Street, Apt 4C\nDar es Salaam, Tanzania',
                                   style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.muted,
@@ -476,7 +478,7 @@ class OrderDetailsScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text('\$${item.price.toStringAsFixed(2)}',
+            Text(formatTsh(item.price),
                 style: const TextStyle(
                     fontSize: 12.5, fontWeight: FontWeight.w700)),
             const SizedBox(height: 3),
@@ -502,11 +504,11 @@ class OrderDetailsScreen extends StatelessWidget {
       title: 'Payment Summary',
       child: Column(
         children: [
-          _payRow('Subtotal', '\$${subtotal.toStringAsFixed(2)}'),
+          _payRow('Subtotal', formatTsh(subtotal)),
           const SizedBox(height: 8),
-          _payRow('Delivery Fee', '\$${delivery.toStringAsFixed(2)}'),
+          _payRow('Delivery Fee', formatTsh(delivery)),
           const SizedBox(height: 8),
-          _payRow('Discount', '-\$${discount.toStringAsFixed(2)}',
+          _payRow('Discount', '-${formatTsh(discount)}',
               valueColor: AppColors.green),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12),
@@ -518,7 +520,7 @@ class OrderDetailsScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 13, fontWeight: FontWeight.w800)),
               const Spacer(),
-              Text('\$${total.toStringAsFixed(2)}',
+              Text(formatTsh(total),
                   style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,

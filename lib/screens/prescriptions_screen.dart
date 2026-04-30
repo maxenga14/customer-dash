@@ -5,19 +5,21 @@ import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'upload_rx_screen.dart';
 import 'rx_details_screen.dart';
+import '../utils/formatters.dart';
+
 
 class PrescriptionsScreen extends StatelessWidget {
   const PrescriptionsScreen({super.key});
 
   int get _needsAction => mockPrescriptions
-      .where((p) => p.status == RxStatus.quotationReady)
+      .where((p) => p.status == RxStatus.approved)
       .length;
   int get _verified =>
-      mockPrescriptions.where((p) => p.status == RxStatus.verified).length +
+      mockPrescriptions.where((p) => p.status == RxStatus.paid).length +
       mockPrescriptions
-          .where((p) => p.status == RxStatus.quotationReady)
+          .where((p) => p.status == RxStatus.approved)
           .length +
-      mockPrescriptions.where((p) => p.status == RxStatus.pendingReview).length;
+      mockPrescriptions.where((p) => p.status == RxStatus.pending).length;
 
   @override
   Widget build(BuildContext context) {
@@ -245,7 +247,7 @@ class _RxCard extends StatelessWidget {
         icon = Icons.broken_image_outlined;
         color = const Color(0xFFD14A4A);
         break;
-      case RxStatus.verified:
+      case RxStatus.paid:
         icon = Icons.task_alt_rounded;
         color = AppColors.green;
         break;
@@ -258,7 +260,7 @@ class _RxCard extends StatelessWidget {
 
   Widget _bodyContent() {
     switch (rx.status) {
-      case RxStatus.quotationReady:
+      case RxStatus.approved:
         return RichText(
           text: TextSpan(
             style: const TextStyle(
@@ -266,18 +268,18 @@ class _RxCard extends StatelessWidget {
             children: [
               TextSpan(text: '${rx.quotationPharmacy} offered '),
               TextSpan(
-                text: '\$${rx.quotationPrice!.toStringAsFixed(2)}',
+                text: formatTsh(rx.quotationPrice!),
                 style: const TextStyle(
                     color: AppColors.green, fontWeight: FontWeight.w700),
               ),
             ],
           ),
         );
-      case RxStatus.pendingReview:
+      case RxStatus.pending:
         return Text(rx.statusNote ?? '',
             style: const TextStyle(
                 fontSize: 10.8, color: AppColors.muted, height: 1.45));
-      case RxStatus.verified:
+      case RxStatus.paid:
         return Text(
           'Order ${rx.linkedOrderNumber} completed via\n${rx.linkedPharmacy}',
           style: const TextStyle(
@@ -306,7 +308,7 @@ class _RxCard extends StatelessWidget {
         ),
         const Spacer(),
         // Right CTA — only for quotationReady and verified
-        if (rx.status == RxStatus.quotationReady)
+        if (rx.status == RxStatus.approved)
           Builder(
               builder: (ctx) => _ctaButton(
                     label: 'Review',
@@ -317,7 +319,7 @@ class _RxCard extends StatelessWidget {
                     ),
                     filled: true,
                   )),
-        if (rx.status == RxStatus.verified)
+        if (rx.status == RxStatus.paid)
           _ctaButton(
             label: 'Reorder',
             onTap: () {},

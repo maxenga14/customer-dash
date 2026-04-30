@@ -190,14 +190,14 @@ class _SplashScreenState extends State<_SplashScreen>
                       ],
                     ),
                     child: const Icon(
-                      Icons.local_pharmacy_rounded,
+                      Icons.health_and_safety_rounded,
                       size: 48,
                       color: Color(0xFF17A772),
                     ),
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'MediRun',
+                    'Afya Hub',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 28,
@@ -207,7 +207,7 @@ class _SplashScreenState extends State<_SplashScreen>
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Your pharmacy, delivered.',
+                    'Your health, our priority.',
                     style: TextStyle(
                       color: Colors.white.withOpacity(.75),
                       fontSize: 13,

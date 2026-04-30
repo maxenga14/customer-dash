@@ -4,6 +4,8 @@ import '../models/prescription.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'checkout_screen.dart';
+import '../utils/formatters.dart';
+
 
 class RxLineItem {
   const RxLineItem({
@@ -26,12 +28,12 @@ class RxDetailsScreen extends StatelessWidget {
     RxLineItem(
         name: 'Amoxicillin 500mg',
         subtitle: 'Capsules • Qty: 20',
-        price: 12.50,
+        price: 12500,
         inStock: true),
     RxLineItem(
         name: 'Benylin Expectorant',
         subtitle: 'Syrup 100ml • Qty: 1',
-        price: 8.00,
+        price: 8000,
         inStock: true),
   ];
 
@@ -356,9 +358,9 @@ class RxDetailsScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 12),
             child: Divider(height: 1, color: Color(0xFFF0F3F6)),
           ),
-          _summaryLine('Subtotal', '\$${_subtotal.toStringAsFixed(2)}'),
+          _summaryLine('Subtotal', formatTsh(_subtotal)),
           const SizedBox(height: 8),
-          _summaryLine('Service Fee', '\$${_serviceFee.toStringAsFixed(2)}'),
+          _summaryLine('Service Fee', formatTsh(_serviceFee)),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12),
             child: Divider(height: 1, color: Color(0xFFF0F3F6)),
@@ -368,7 +370,7 @@ class RxDetailsScreen extends StatelessWidget {
               const Text('Total Quotation',
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
               const Spacer(),
-              Text('\$${_total.toStringAsFixed(2)}',
+              Text(formatTsh(_total),
                   style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,
@@ -414,7 +416,7 @@ class RxDetailsScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('\$${item.price.toStringAsFixed(2)}',
+              Text(formatTsh(item.price),
                   style: const TextStyle(
                       fontSize: 12.5, fontWeight: FontWeight.w700)),
               const SizedBox(height: 4),

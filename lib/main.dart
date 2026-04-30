@@ -27,7 +27,7 @@ class CustomerDashApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'MediRun',
+      title: 'Afya Hub',
       theme: AppTheme.theme,
       initialRoute: AppRoutes.splash,
       onGenerateRoute: generateRoute,

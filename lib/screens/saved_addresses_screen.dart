@@ -41,8 +41,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
       iconData: Icons.home_outlined,
       name: 'John Doe',
       line1: '123 Wellness Avenue, Apt 4B',
-      line2: 'Nairobi, 00100',
-      phone: '+254 712 345 678',
+      line2: 'Kinondoni, Dar es Salaam',
+      phone: '+255 712 345 678',
       isDefault: true,
     ),
     SavedAddress(
@@ -51,8 +51,8 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
       iconData: Icons.business_outlined,
       name: 'John Doe',
       line1: 'Tech Hub Tower, Floor 12',
-      line2: 'Westlands, Nairobi, 00800',
-      phone: '+254 798 765 432',
+      line2: 'Kariakoo, Dar es Salaam',
+      phone: '+255 798 765 432',
       isDefault: false,
     ),
   ];
@@ -199,7 +199,7 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
             const SizedBox(height: 12),
             _sheetField(line2Ctrl, 'Address Line 2', 'City, postal code'),
             const SizedBox(height: 12),
-            _sheetField(phoneCtrl, 'Phone Number', '+254 7XX XXX XXX'),
+            _sheetField(phoneCtrl, 'Phone Number', '+255 7XX XXX XXX'),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,

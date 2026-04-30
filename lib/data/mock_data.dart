@@ -45,9 +45,9 @@ class PharmacyData {
 }
 
 const nearbyPharmacy = PharmacyData(
-  name: 'City Care Pharmacy',
-  distance: '1.2 km',
-  address: 'Westlands, Nairobi',
+  name: 'Dawa Plus Pharmacy',
+  distance: '0.8 km',
+  address: 'Kariakoo, Dar es Salaam',
   isOpen: true,
   rating: 4.8,
 );
@@ -58,7 +58,7 @@ const allProducts = [
   ProductData(
     name: 'Amoxicillin 500mg',
     subtitle: 'Capsules • Pack of 20',
-    price: 12.50,
+    price: 7500,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFEAF3FF),
@@ -67,7 +67,7 @@ const allProducts = [
   ProductData(
     name: 'Paracetamol 500mg',
     subtitle: 'Tablets • Pack of 16',
-    price: 4.50,
+    price: 2500,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFF0F8FF),
@@ -76,7 +76,7 @@ const allProducts = [
   ProductData(
     name: 'Salbutamol Inhaler',
     subtitle: '100mcg • 200 doses',
-    price: 15.00,
+    price: 18000,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFF5EEFF),
@@ -85,7 +85,7 @@ const allProducts = [
   ProductData(
     name: 'Ibuprofen 400mg',
     subtitle: 'Tablets • Pack of 24',
-    price: 6.75,
+    price: 4500,
     tag: 'Low Stock',
     tagBg: Color(0xFFFFEBCF), tagText: AppColors.yellow,
     imageBg: Color(0xFFFFF3E0),
@@ -94,7 +94,7 @@ const allProducts = [
   ProductData(
     name: 'Metformin 850mg',
     subtitle: 'Tablets • Pack of 30',
-    price: 8.20,
+    price: 6000,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFEAF3FF),
@@ -105,7 +105,7 @@ const allProducts = [
   ProductData(
     name: 'Daily Multivitamin',
     subtitle: 'Gummies • 60 count',
-    price: 12.99,
+    price: 12000,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFFFF1F1),
@@ -114,7 +114,7 @@ const allProducts = [
   ProductData(
     name: 'Vitamin D3 2000IU',
     subtitle: 'Softgels • 90 count',
-    price: 9.50,
+    price: 9500,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFFFFAE0),
@@ -123,7 +123,7 @@ const allProducts = [
   ProductData(
     name: 'Vitamin C 1000mg',
     subtitle: 'Effervescent • 20 tablets',
-    price: 7.30,
+    price: 5500,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFFFF3E0),
@@ -132,7 +132,7 @@ const allProducts = [
   ProductData(
     name: 'Omega-3 Fish Oil',
     subtitle: 'Softgels • 60 count',
-    price: 14.00,
+    price: 14500,
     tag: 'Low Stock',
     tagBg: Color(0xFFFFEBCF), tagText: AppColors.yellow,
     imageBg: Color(0xFFE8F5FF),
@@ -143,7 +143,7 @@ const allProducts = [
   ProductData(
     name: 'Johnson\'s Baby Powder',
     subtitle: 'Talc-free • 200g',
-    price: 5.80,
+    price: 7000,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFF5F0FF),
@@ -152,7 +152,7 @@ const allProducts = [
   ProductData(
     name: 'Gripe Water',
     subtitle: 'Relief drops • 150ml',
-    price: 6.20,
+    price: 5500,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFE8F8F0),
@@ -161,7 +161,7 @@ const allProducts = [
   ProductData(
     name: 'Infant Paracetamol',
     subtitle: 'Suspension • 100ml',
-    price: 4.90,
+    price: 4500,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFEAF3FF),
@@ -172,7 +172,7 @@ const allProducts = [
   ProductData(
     name: 'Cetaphil Face Wash',
     subtitle: 'Gentle • 250ml',
-    price: 11.50,
+    price: 18500,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFF0F8FF),
@@ -181,7 +181,7 @@ const allProducts = [
   ProductData(
     name: 'Eucerin Body Lotion',
     subtitle: 'Urea 5% • 400ml',
-    price: 13.80,
+    price: 22000,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFFFF5F0),
@@ -190,7 +190,7 @@ const allProducts = [
   ProductData(
     name: 'Oral B Toothpaste',
     subtitle: 'Whitening • 75ml',
-    price: 3.50,
+    price: 4000,
     tag: 'In Stock',
     tagBg: Color(0xFFDDF6E9), tagText: AppColors.green,
     imageBg: Color(0xFFE8F5FF),
