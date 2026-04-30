@@ -111,10 +111,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _menuItem(Icons.location_on_outlined, 'Saved Addresses',
                           subtitle: 'Manage delivery locations',
                           onTap: () => _push(const SavedAddressesScreen())),
-                      _menuItem(Icons.credit_card_outlined, 'Payment Methods',
-                          subtitle: 'M-Pesa, Visa, Mastercard',
-                          onTap: () {},
-                          isLast: true),
                     ]),
                     const SizedBox(height: 22),
 
