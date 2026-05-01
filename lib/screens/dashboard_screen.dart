@@ -3,7 +3,9 @@ import '../data/mock_data.dart';
 import '../models/user_profile.dart';
 import '../data/orders_data.dart';
 import '../models/cart_item.dart';
+import '../state/cart_notifier.dart';
 import '../theme/app_theme.dart';
+import 'search_screen.dart';
 import '../router.dart';
 import '../widgets/animated_bottom_nav.dart';
 import '../widgets/common.dart';
@@ -50,7 +52,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int selectedIndex = 0;
-  final List<CartItem> cart = [];
+  // Cart is now managed by CartNotifier singleton — shared with SearchScreen
+  CartNotifier get _cart => CartNotifier.instance;
   String _selectedCategory = 'All';
 
   // ── One nested Navigator key per tab (including Home) ─────────────────
@@ -62,26 +65,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
     GlobalKey<NavigatorState>(), // 3 Settings
   ];
 
-  int get totalCartItems => cart.fold(0, (sum, item) => sum + item.quantity);
+  int get totalCartItems => _cart.totalItems;
+
+  void _onCartChanged() => setState(() {});
+
 
   void _addToCart(ProductData product) {
-    final i = cart.indexWhere((e) => e.name == product.name);
-    setState(() {
-      if (i >= 0) {
-        cart[i].quantity += 1;
-      } else {
-        cart.add(CartItem(
-            name: product.name,
-            subtitle: product.subtitle,
-            price: product.price,
-            quantity: 1,
-            tag: product.tag));
-      }
-    });
+    _cart.addProduct(
+      name: product.name,
+      subtitle: product.subtitle,
+      price: product.price.toDouble(),
+      tag: product.tag,
+    );
+    setState(() {}); // refresh badge
+  }
+
+
+  void _openSearch() {
+    _tabNavKeys[selectedIndex].currentState?.push(
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 280),
+        reverseTransitionDuration: const Duration(milliseconds: 220),
+        pageBuilder: (_, animation, __) => FadeTransition(
+          opacity: animation,
+          child: const SearchScreen(),
+        ),
+      ),
+    );
   }
 
   Future<void> _openCheckout() async {
-    if (cart.isEmpty) return;
+    if (_cart.value.isEmpty) return;
     // Push checkout within the CURRENT tab's navigator so the
     // bottom nav bar stays visible throughout the checkout flow.
     _tabNavKeys[selectedIndex].currentState?.push(
@@ -93,8 +107,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   .animate(CurvedAnimation(
                       parent: animation, curve: Curves.easeOutCubic)),
               child: CheckoutScreen(
-                initialItems: cart.map((e) => e.copy()).toList(),
-                onOrderPlaced: () => setState(() => cart.clear()),
+                initialItems: _cart.snapshot,
+                onOrderPlaced: () { _cart.clear(); setState(() {}); },
                 onGoHome: () => setState(() => selectedIndex = 0),
               ),
             ),
@@ -151,7 +165,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               bottom: 0,
               child: AnimatedBottomNav(
                 selectedIndex: selectedIndex,
-                hasCart: cart.isNotEmpty,
+                hasCart: _cart.value.isNotEmpty,
                 totalItems: totalCartItems,
                 onTap: _navTo,
                 onCheckoutTap: _openCheckout,
@@ -299,7 +313,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 14),
           // Search bar
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, AppRoutes.search),
+            _openSearch,
             child: Container(
               height: 40,
               padding: const EdgeInsets.symmetric(horizontal: 14),

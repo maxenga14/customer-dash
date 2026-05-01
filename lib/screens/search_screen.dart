@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/mock_data.dart';
-import '../models/cart_item.dart';
+import '../state/cart_notifier.dart';
 import '../theme/app_theme.dart';
 import '../utils/formatters.dart';
 
@@ -15,7 +15,6 @@ class _SearchScreenState extends State<SearchScreen> {
   late final TextEditingController _queryCtrl;
   final FocusNode _focus = FocusNode();
   String _selectedCategory = 'All';
-  List<CartItem> _cart = [];
 
   static const _categories = [
     'All', 'Medicines', 'Vitamins', 'Baby Care', 'Personal',
@@ -27,10 +26,15 @@ class _SearchScreenState extends State<SearchScreen> {
     _queryCtrl = TextEditingController(text: widget.initialQuery);
     WidgetsBinding.instance.addPostFrameCallback((_) => _focus.requestFocus());
     _queryCtrl.addListener(() => setState(() {}));
+    // Listen so cart badge in bottom nav stays live
+    CartNotifier.instance.addListener(_onCartChanged);
   }
+
+  void _onCartChanged() => setState(() {});
 
   @override
   void dispose() {
+    CartNotifier.instance.removeListener(_onCartChanged);
     _queryCtrl.dispose();
     _focus.dispose();
     super.dispose();
@@ -39,7 +43,8 @@ class _SearchScreenState extends State<SearchScreen> {
   List<ProductData> get _results {
     final q = _queryCtrl.text.trim().toLowerCase();
     return allProducts.where((p) {
-      final catMatch = _selectedCategory == 'All' || p.category == _selectedCategory;
+      final catMatch = _selectedCategory == 'All' ||
+          p.category == _selectedCategory;
       final qMatch = q.isEmpty ||
           p.name.toLowerCase().contains(q) ||
           p.subtitle.toLowerCase().contains(q) ||
@@ -49,38 +54,28 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _addToCart(ProductData p) {
-    setState(() {
-      final idx = _cart.indexWhere((c) => c.name == p.name);
-      if (idx >= 0) {
-        _cart[idx].quantity++;
-      } else {
-        _cart.add(CartItem(
-          name: p.name,
-          subtitle: p.subtitle,
-          price: p.price.toDouble(),
-          quantity: 1,
-          tag: p.tag,
-        ));
-      }
-    });
+    CartNotifier.instance.addProduct(
+      name: p.name,
+      subtitle: p.subtitle,
+      price: p.price.toDouble(),
+      tag: p.tag,
+    );
+    // Tiny haptic-style feedback via snackbar — keep it brief
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('${p.name} added to cart'),
+      content: Text('${p.name} added'),
       backgroundColor: AppColors.green,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      margin: const EdgeInsets.all(16),
-      duration: const Duration(seconds: 1),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 80), // above bottom nav
+      duration: const Duration(milliseconds: 900),
     ));
-  }
-
-  int _qtyInCart(ProductData p) {
-    final idx = _cart.indexWhere((c) => c.name == p.name);
-    return idx >= 0 ? _cart[idx].quantity : 0;
   }
 
   @override
   Widget build(BuildContext context) {
     final results = _results;
+    final cartCount = CartNotifier.instance.totalItems;
 
     return Scaffold(
       backgroundColor: AppColors.bg,
@@ -89,12 +84,12 @@ class _SearchScreenState extends State<SearchScreen> {
           // ── Search bar ────────────────────────────────────────────────
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(8, 8, 16, 12),
+            padding: const EdgeInsets.fromLTRB(8, 10, 16, 12),
             child: Row(children: [
               IconButton(
                   icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
                   color: AppColors.text,
-                  onPressed: () => Navigator.pop(context, _cart)),
+                  onPressed: () => Navigator.pop(context)),
               Expanded(
                 child: Container(
                   height: 42,
@@ -123,12 +118,40 @@ class _SearchScreenState extends State<SearchScreen> {
                             )
                           : null,
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 11),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 11),
                     ),
                   ),
                 ),
               ),
+              // Cart badge
+              if (cartCount > 0) ...[
+                const SizedBox(width: 10),
+                Stack(children: [
+                  Container(
+                    width: 42, height: 42,
+                    decoration: BoxDecoration(
+                        color: AppColors.lightGreen,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: AppColors.green.withOpacity(.25))),
+                    child: const Icon(Icons.shopping_cart_outlined,
+                        size: 20, color: AppColors.green),
+                  ),
+                  Positioned(
+                    right: 4, top: 4,
+                    child: Container(
+                      width: 16, height: 16,
+                      decoration: const BoxDecoration(
+                          color: AppColors.green, shape: BoxShape.circle),
+                      child: Center(
+                          child: Text('$cartCount',
+                              style: const TextStyle(
+                                  fontSize: 9, fontWeight: FontWeight.w800,
+                                  color: Colors.white))),
+                    ),
+                  ),
+                ]),
+              ],
             ]),
           ),
 
@@ -155,7 +178,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           color: sel ? AppColors.green : AppColors.bg,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                              color: sel ? AppColors.green : AppColors.border)),
+                              color: sel
+                                  ? AppColors.green
+                                  : AppColors.border)),
                       child: Text(cat,
                           style: TextStyle(
                               fontSize: 12,
@@ -171,11 +196,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
           // ── Results ───────────────────────────────────────────────────
           Expanded(
-            child: results.isEmpty ? _emptyState() : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: results.length,
-              itemBuilder: (_, i) => _resultCard(results[i]),
-            ),
+            child: results.isEmpty
+                ? _emptyState()
+                : ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                    itemCount: results.length,
+                    itemBuilder: (_, i) => _resultCard(results[i]),
+                  ),
           ),
         ]),
       ),
@@ -183,7 +210,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _resultCard(ProductData p) {
-    final qty = _qtyInCart(p);
+    final qty = CartNotifier.instance.quantityOf(p.name);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
@@ -197,7 +224,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(children: [
-          // Image placeholder
+          // Pill icon
           Container(
             width: 56, height: 56,
             decoration: BoxDecoration(
@@ -260,14 +287,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           color: AppColors.green.withOpacity(.2))),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     GestureDetector(
-                      onTap: () => setState(() {
-                        final idx = _cart.indexWhere((c) => c.name == p.name);
-                        if (_cart[idx].quantity > 1) {
-                          _cart[idx].quantity--;
-                        } else {
-                          _cart.removeAt(idx);
-                        }
-                      }),
+                      onTap: () => CartNotifier.instance.decrement(p.name),
                       child: const Padding(
                           padding: EdgeInsets.all(8),
                           child: Icon(Icons.remove_rounded,
