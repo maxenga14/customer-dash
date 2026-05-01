@@ -313,7 +313,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 14),
           // Search bar
           GestureDetector(
-            _openSearch,
+            onTap: _openSearch,
             child: Container(
               height: 40,
               padding: const EdgeInsets.symmetric(horizontal: 14),
