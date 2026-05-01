@@ -131,8 +131,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         // Try to pop within the active tab's nested navigator first
         final navKey = _tabNavKeys[selectedIndex];
         if (navKey.currentState?.canPop() == true) {
-          navKey.currentState!.pop();
-          return false; // handled — stay in app
+          // maybePop() respects WillPopScope on the top route (e.g. SearchScreen)
+          // so nested screens can intercept back before we blindly pop them.
+          await navKey.currentState!.maybePop();
+          return false; // always handled at this level
         }
         if (selectedIndex != 0) {
           // At a tab's root — return to Home tab

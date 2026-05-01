@@ -23,9 +23,6 @@ class _SearchScreenState extends State<SearchScreen> {
     'All', 'Medicines', 'Vitamins', 'Baby Care', 'Personal',
   ];
 
-  // ── Fix 3: use ValueListenableBuilder so cart updates are instant ──────
-  // (no manual addListener / setState needed for cart counts)
-
   @override
   void initState() {
     super.initState();
@@ -41,18 +38,18 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 
-  // ── Fix 1: smart back — clear query first, then category, then dismiss ─
+  // Smart back: clear query → reset category → dismiss
   Future<bool> _onWillPop() async {
     if (_queryCtrl.text.isNotEmpty) {
       _queryCtrl.clear();
       _focus.requestFocus();
-      return false; // stay on search
+      return false;
     }
     if (_selectedCategory != 'All') {
       setState(() => _selectedCategory = 'All');
-      return false; // stay on search
+      return false;
     }
-    return true; // nothing to clear → dismiss
+    return true;
   }
 
   List<ProductData> get _results {
@@ -87,7 +84,6 @@ class _SearchScreenState extends State<SearchScreen> {
     ));
   }
 
-  // ── Fix 2: cart button opens checkout (pushed within same tab navigator)
   void _openCartFromSearch() {
     if (CartNotifier.instance.value.isEmpty) return;
     Navigator.of(context).push(
@@ -101,10 +97,9 @@ class _SearchScreenState extends State<SearchScreen> {
             initialItems: CartNotifier.instance.snapshot,
             onOrderPlaced: () {
               CartNotifier.instance.clear();
-              // Pop checkout then pop search → back to dashboard home
               Navigator.of(context)
-                ..pop() // checkout
-                ..pop(); // search
+                ..pop()
+                ..pop();
             },
             onGoHome: () {
               Navigator.of(context)
@@ -117,10 +112,49 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  Future<void> _confirmClearCart() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Clear cart?',
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: AppColors.text)),
+        content: const Text(
+            'All items will be removed from your cart.',
+            style: TextStyle(fontSize: 13.5, color: AppColors.muted)),
+        actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel',
+                style: TextStyle(color: AppColors.muted,
+                    fontWeight: FontWeight.w600)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(
+                backgroundColor: Colors.red.shade50,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8))),
+            child: Text('Clear all',
+                style: TextStyle(
+                    color: Colors.red.shade600,
+                    fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      HapticFeedback.mediumImpact();
+      CartNotifier.instance.clear();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // ValueListenableBuilder guarantees instant rebuild on every cart change
-    // — no manual listener, no setState race condition.
     return WillPopScope(
       onWillPop: _onWillPop,
       child: ValueListenableBuilder<List<CartItem>>(
@@ -133,20 +167,22 @@ class _SearchScreenState extends State<SearchScreen> {
             backgroundColor: AppColors.bg,
             body: SafeArea(
               child: Column(children: [
-                // ── Search header ─────────────────────────────────────
+                // ── Header ────────────────────────────────────────────
                 Container(
                   color: Colors.white,
-                  padding: const EdgeInsets.fromLTRB(8, 10, 16, 12),
+                  padding: const EdgeInsets.fromLTRB(8, 10, 12, 12),
                   child: Row(children: [
-                    // Back arrow — also respects smart-back logic
+                    // Back — runs smart-back logic
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+                      icon: const Icon(
+                          Icons.arrow_back_ios_new_rounded, size: 18),
                       color: AppColors.text,
                       onPressed: () async {
                         final shouldPop = await _onWillPop();
                         if (shouldPop && mounted) Navigator.pop(context);
                       },
                     ),
+                    // Search field
                     Expanded(
                       child: Container(
                         height: 42,
@@ -182,12 +218,12 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                     ),
-                    // ── Fix 2: live cart badge — tappable, opens checkout
+                    // ── Cart badge (tappable → checkout) ─────────────
                     if (cartCount > 0) ...[
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       GestureDetector(
                         onTap: _openCartFromSearch,
-                        child: Stack(children: [
+                        child: Stack(clipBehavior: Clip.none, children: [
                           Container(
                             width: 44, height: 44,
                             decoration: BoxDecoration(
@@ -199,9 +235,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                 size: 20, color: AppColors.green),
                           ),
                           Positioned(
-                            right: 4, top: 4,
+                            right: -2, top: -4,
                             child: Container(
-                              width: 17, height: 17,
+                              width: 18, height: 18,
                               decoration: const BoxDecoration(
                                   color: AppColors.green,
                                   shape: BoxShape.circle),
@@ -215,6 +251,30 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                         ]),
+                      ),
+                      // ── Clear cart button ─────────────────────────
+                      const SizedBox(width: 6),
+                      GestureDetector(
+                        onTap: _confirmClearCart,
+                        child: Container(
+                          height: 44,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.red.shade50,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: Colors.red.shade200)),
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            Icon(Icons.delete_outline_rounded,
+                                size: 15, color: Colors.red.shade500),
+                            const SizedBox(width: 4),
+                            Text('Clear',
+                                style: TextStyle(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.red.shade600)),
+                          ]),
+                        ),
                       ),
                     ],
                   ]),
@@ -234,7 +294,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         final cat = _categories[i];
                         final sel = _selectedCategory == cat;
                         return GestureDetector(
-                          onTap: () => setState(() => _selectedCategory = cat),
+                          onTap: () =>
+                              setState(() => _selectedCategory = cat),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
                             padding: const EdgeInsets.symmetric(
@@ -243,14 +304,16 @@ class _SearchScreenState extends State<SearchScreen> {
                                 color: sel ? AppColors.green : AppColors.bg,
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                    color:
-                                        sel ? AppColors.green : AppColors.border)),
+                                    color: sel
+                                        ? AppColors.green
+                                        : AppColors.border)),
                             child: Text(cat,
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
-                                    color:
-                                        sel ? Colors.white : AppColors.muted)),
+                                    color: sel
+                                        ? Colors.white
+                                        : AppColors.muted)),
                           ),
                         );
                       },
@@ -279,7 +342,6 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  // Pass cartItems snapshot in so card quantities are always in sync
   Widget _resultCard(ProductData p, List<CartItem> cartItems) {
     final idx = cartItems.indexWhere((e) => e.name == p.name);
     final qty = idx >= 0 ? cartItems[idx].quantity : 0;
@@ -301,8 +363,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Container(
             width: 56, height: 56,
             decoration: BoxDecoration(
-                color: p.imageBg,
-                borderRadius: BorderRadius.circular(12)),
+                color: p.imageBg, borderRadius: BorderRadius.circular(12)),
             child: const Icon(Icons.medication_liquid_outlined,
                 size: 26, color: Colors.white70),
           ),
@@ -323,8 +384,8 @@ class _SearchScreenState extends State<SearchScreen> {
               const SizedBox(height: 6),
               Row(children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
                       color: p.tagBg,
                       borderRadius: BorderRadius.circular(6)),
@@ -344,7 +405,6 @@ class _SearchScreenState extends State<SearchScreen> {
             ]),
           ),
           const SizedBox(width: 10),
-          // ── Qty control ─────────────────────────────────────────────
           qty == 0
               ? GestureDetector(
                   onTap: () => _addToCart(p),
@@ -414,8 +474,7 @@ class _SearchScreenState extends State<SearchScreen> {
           if (_queryCtrl.text.isNotEmpty) ...[
             const SizedBox(height: 6),
             const Text('Try a different name or category.',
-                style:
-                    TextStyle(fontSize: 12.5, color: AppColors.muted)),
+                style: TextStyle(fontSize: 12.5, color: AppColors.muted)),
           ],
         ]),
       );
